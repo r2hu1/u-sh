@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
 import {
     Card,
     CardContent,
@@ -58,7 +57,7 @@ export default function Pricing() {
                     </CardContent>
                     <CardFooter>
                         <Button className="w-full" variant="outline">
-                            <Check className="mr-2 h-4 w-4" /> Get Started
+                            Get Started
                         </Button>
                     </CardFooter>
                 </Card>
@@ -117,7 +116,7 @@ export default function Pricing() {
                     </CardContent>
                     <CardFooter>
                         <Button className="w-full">
-                            <Check className="mr-2 h-4 w-4" /> Get Started
+                            Get Started
                         </Button>
                     </CardFooter>
                 </Card>
