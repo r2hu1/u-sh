@@ -31,7 +31,7 @@ export default function Pricing() {
                 <p className="text-muted-foreground mx-auto text-sm sm:text-base text-center max-w-md">There is no need of any subscription. You can use it for free. But you can donote me if you want.</p>
             </div>
             <div className="mt-7 grid sm:grid-cols-2 gap-3 place-content-center w-fit mx-auto">
-                <Card className={"max-w-[300px]"}>
+                <Card className={"sm:max-w-[300px]"}>
                     <CardHeader>
                         <CardTitle className="text-xl -mb-1">0$ Yearly</CardTitle>
                         <CardDescription>100% off for 1 year for lifetime</CardDescription>
@@ -63,7 +63,7 @@ export default function Pricing() {
                     </CardFooter>
                 </Card>
 
-                <Card className={"max-w-[300px]"}>
+                <Card className={"sm:max-w-[300px]"}>
                     <CardHeader>
                         <CardTitle className="text-xl -mb-1">Donate Me</CardTitle>
                         <CardDescription>help me to get a high end pc</CardDescription>
