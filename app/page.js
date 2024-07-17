@@ -138,27 +138,54 @@ export default function Page() {
 
           <Card className={"max-w-[300px]"}>
             <CardHeader>
-              <CardTitle className="text-xl -mb-1">0$ Yearly</CardTitle>
-              <CardDescription>100% for 1 year for lifetime</CardDescription>
+              <CardTitle className="text-xl -mb-1">Donate Me</CardTitle>
+              <CardDescription>help me to get a high end pc</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div>
-                {pricing_features.map((notification, index) => (
-                  <div
-                    key={index}
-                    className="mb-1 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
-                  >
-                    <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {notification.title}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {notification.description}
-                      </p>
-                    </div>
+                <div
+                  className="mb-1 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
+                >
+                  <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      personal response
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      get a quote
+                    </p>
                   </div>
-                ))}
+                </div>
+              </div>
+              <div>
+                <div
+                  className="mb-1 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
+                >
+                  <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      help in your projects
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      minor bugs and fixes
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div
+                  className="mb-1 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
+                >
+                  <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      initial reviewer
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      get feedback for project
+                    </p>
+                  </div>
+                </div>
               </div>
             </CardContent>
             <CardFooter>
