@@ -30,7 +30,7 @@ export default function Pricing() {
                 <h3 className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl text-center">Pricing & Plans</h3>
                 <p className="text-muted-foreground mx-auto text-sm sm:text-base text-center max-w-md">There is no need of any subscription. You can use it for free. But you can donote me if you want.</p>
             </div>
-            <div className="mt-7 grid sm:grid-cols-2 gap-3 place-content-center w-fit mx-auto">
+            <div className="mt-7 grid sm:grid-cols-2 gap-3 sm:place-content-center sm:w-fit sm:mx-auto">
                 <Card className={"sm:max-w-[300px]"}>
                     <CardHeader>
                         <CardTitle className="text-xl -mb-1">0$ Yearly</CardTitle>
