@@ -14,14 +14,14 @@ export default function Stats() {
         </div>
         <div className="grid !gap-0">
         <div className='flex items-center justify-center'>
-            <CountUp start={123} end={1849} className='text-2xl md:text-2.5xl' />
+            <CountUp start={1223} end={1849} className='text-2xl md:text-2.5xl' />
             <span className='text-2xl md:text-2.5xl'>+</span>
           </div>
           <p className="text-muted-foreground text-sm sm:text-base">links shorted</p>
         </div>
         <div className="grid !gap-0">
         <div className='flex items-center justify-center'>
-            <CountUp start={123} end={85679} className='text-2xl md:text-2.5xl' />
+            <CountUp start={11223} end={85679} className='text-2xl md:text-2.5xl' />
             <span className='text-2xl md:text-2.5xl'>+</span>
           </div>
           <p className="text-muted-foreground text-sm sm:text-base">link clicks</p>
