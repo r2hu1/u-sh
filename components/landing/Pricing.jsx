@@ -32,7 +32,7 @@ export default function Pricing() {
             <div className="mt-7 grid sm:grid-cols-2 gap-3 sm:place-content-center sm:w-fit sm:mx-auto">
                 <Card className={"sm:max-w-[300px]"}>
                     <CardHeader>
-                        <CardTitle className="text-xl -mb-1">0$ Yearly</CardTitle>
+                        <CardTitle className="text-xl -mb-1 font-normal">0$ Yearly</CardTitle>
                         <CardDescription>100% off for 1 year for lifetime</CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-4">
@@ -44,7 +44,7 @@ export default function Pricing() {
                                 >
                                     <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
                                     <div className="space-y-1">
-                                        <p className="text-sm font-medium leading-none">
+                                        <p className="text-sm leading-none">
                                             {notification.title}
                                         </p>
                                         <p className="text-sm text-muted-foreground">
@@ -64,7 +64,7 @@ export default function Pricing() {
 
                 <Card className={"sm:max-w-[300px]"}>
                     <CardHeader>
-                        <CardTitle className="text-xl -mb-1">Donate Me</CardTitle>
+                        <CardTitle className="text-xl -mb-1 font-normal">Donate Me</CardTitle>
                         <CardDescription>help me to get a high end pc</CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-4">
@@ -74,7 +74,7 @@ export default function Pricing() {
                             >
                                 <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
                                 <div className="space-y-1">
-                                    <p className="text-sm font-medium leading-none">
+                                    <p className="text-sm leading-none">
                                         personal response
                                     </p>
                                     <p className="text-sm text-muted-foreground">
@@ -89,7 +89,7 @@ export default function Pricing() {
                             >
                                 <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
                                 <div className="space-y-1">
-                                    <p className="text-sm font-medium leading-none">
+                                    <p className="text-sm leading-none">
                                         help in your projects
                                     </p>
                                     <p className="text-sm text-muted-foreground">
@@ -104,7 +104,7 @@ export default function Pricing() {
                             >
                                 <span className="flex h-2 w-2 translate-y-1 rounded-full bg-blue-400" />
                                 <div className="space-y-1">
-                                    <p className="text-sm font-medium leading-none">
+                                    <p className="text-sm leading-none">
                                         initial reviewer
                                     </p>
                                     <p className="text-sm text-muted-foreground">
