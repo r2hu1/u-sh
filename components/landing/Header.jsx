@@ -1,7 +1,8 @@
 import { Link2 } from "lucide-react";
 import Link from "next/link";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import IfLoggedInElse from "../helpers/ifLoggedInElse";
+import { SignOutButton } from "@clerk/nextjs";
 
 export default function Header() {
   return (
@@ -13,12 +14,14 @@ export default function Header() {
         <IfLoggedInElse ifNot={
           <Link className={buttonVariants({ variant: "outline" })} href="/sign-in">Login</Link>
         } ifUser={
-          <Link className={buttonVariants({ variant: "outline" })} href="/dashboard">Login</Link>
+          <SignOutButton redirectUrl="/">
+            <Button variant="outline">Logout</Button>
+          </SignOutButton>
         } />
         <IfLoggedInElse ifNot={
           <Link className={buttonVariants({ variant: "shine" })} href="/sign-up">Get Started</Link>
         } ifUser={
-          <Link className={buttonVariants({ variant: "shine" })} href="/dashboard">Get Started</Link>
+          <Link className={buttonVariants({ variant: "shine" })} href="/dashboard">Dashboard</Link>
         } />
       </div>
     </header>
