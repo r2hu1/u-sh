@@ -26,7 +26,7 @@ export default function Pricing() {
     return (
         <section className="px-6 md:px-20 lg:px-32 mt-16 mb-14">
             <div className="grid gap-2">
-                <h3 className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl text-center">Pricing & Plans</h3>
+                <h3 className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl text-center">Pricing <span className=" underline underline-offset-[5px] decoration-blue-400">&</span> Plans</h3>
                 <p className="text-muted-foreground mx-auto text-sm sm:text-base text-center max-w-md">There is no need of any subscription. You can use it for free. But you can donote me if you want.</p>
             </div>
             <div className="mt-7 grid sm:grid-cols-2 gap-3 sm:place-content-center sm:w-fit sm:mx-auto">
