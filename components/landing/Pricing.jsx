@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -7,6 +7,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import IfLoggedInElse from "../helpers/ifLoggedInElse";
 
 export default function Pricing() {
     const pricing_features = [
@@ -56,9 +59,15 @@ export default function Pricing() {
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button className="w-full" variant="outline">
-                            Get Started
-                        </Button>
+                        <IfLoggedInElse ifNot={
+                            <Link href="/sign-up" className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+                                Get Started
+                            </Link>
+                        } ifUser={
+                            <Link href="/dashboard" className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+                                Get Started
+                            </Link>
+                        } />
                     </CardFooter>
                 </Card>
 
