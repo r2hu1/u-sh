@@ -16,7 +16,7 @@ export default function Hero() {
           <IfLoggedInElse ifNot={
             <Link href="/sign-up" className={buttonVariants({ variant: "outline" })}>Get Started</Link>
           } ifUser={
-            <Link href="/dashboard" className={buttonVariants({ variant: "outline" })}>Get Started</Link>
+            <Link href="/dashboard" className={buttonVariants({ variant: "outline" })}>Dashboard</Link>
           } />
         </div>
       </div>
