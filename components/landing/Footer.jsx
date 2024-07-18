@@ -11,8 +11,8 @@ export default function Footer() {
                 <p className="text-muted-foreground text-sm sm:text-base">built to demonstrate my skills & to put in my portfolio</p>
             </div>
             <div className="mt-2 flex gap-3 items-center justify-center">
-                <Link href="https://github.com/r2hu1/url-shortner" className="underline underline-offset-[5px] decoration-blue-400">Github Repo</Link>
-                <Link href="https://rahul.eu.org" className="underline underline-offset-[5px] decoration-blue-400">My Portfolio</Link>
+                <Link href="https://github.com/r2hu1/url-shortner" className="underline underline-offset-[5px] decoration-blue-400 text-sm">Github Repo</Link>
+                <Link href="https://rahul.eu.org" className="underline underline-offset-[5px] decoration-blue-400 text-sm">My Portfolio</Link>
             </div>
             <div className="mt-4">
                 <ModeToggle />
