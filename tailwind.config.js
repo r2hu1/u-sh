@@ -82,9 +82,19 @@ module.exports = {
           '50%': { backgroundPosition: '100% 100%' },
         },
         "shine": {
-            from: { backgroundPosition: '200% 0' },
-            to: { backgroundPosition: '-200% 0' },
+          from: { backgroundPosition: '200% 0' },
+          to: { backgroundPosition: '-200% 0' },
+        },
+        "text": {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center',
           },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center',
+          },
+        },
       },
       animation: {
         "shine": "shine 8s ease-in-out infinite",
@@ -93,6 +103,7 @@ module.exports = {
         "pulseGlow": "pulseGlow 1.75s infinite cubic-bezier(0.66, 0, 0, 1)",
         "spinner": "spinner 1.2s linear infinite",
         "skeleton": 'skeleton 8s ease-in-out infinite',
+        "text": 'text 5s ease forwards',
       },
     },
   },
