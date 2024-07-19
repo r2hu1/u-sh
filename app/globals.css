@@ -63,7 +63,14 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.cl-avatarImage,
+.cl-avatarBox {
+  height: 40px;
+  width: 40px;
 }

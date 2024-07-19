@@ -1,7 +1,9 @@
+import Header from "@/components/dashboard/Header";
+
 export default function page() {
     return (
         <main>
-            Dashboard in dev
+            <Header/>
         </main>
     )
 }
