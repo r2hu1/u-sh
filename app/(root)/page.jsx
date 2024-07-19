@@ -9,8 +9,8 @@ export default function Page() {
   return (
     <main>
       <Hero />
-      {/* <Stats /> */}
-      <Review/>
+      {/* <Review/> */}
+      <Stats />
       <Feature />
       <Pricing />
     </main>
