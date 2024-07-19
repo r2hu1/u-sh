@@ -17,7 +17,7 @@ export default function Header() {
         <header className="px-6 md:px-20 lg:px-32 py-4 flex items-center justify-between">
             <Sheet>
                 <SheetTrigger asChild>
-                    <div className="flex items-center gap-1 border border-border rounded-lg p-2 hover:bg-secondary cursor-pointer transition">
+                    <div className="flex items-center justify-center border border-border rounded-lg h-10 w-10 hover:bg-secondary cursor-pointer transition">
                         <PanelTopOpen className="h-5 w-5 rotate-[90deg]" />
                     </div>
                 </SheetTrigger>
