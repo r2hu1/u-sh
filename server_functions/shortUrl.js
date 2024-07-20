@@ -29,11 +29,13 @@ export default async function ShortUrl({ url, ali }) {
                 const data = new short_url({ author: user.emailAddresses[0].emailAddress, destination_url: url, alias: random_alias });
                 await data.save();
                 const setUserLimit = await User.findOneAndUpdate({ email: user.emailAddresses[0].emailAddress }, { url_limit: getUserLimit.url_limit - 1 });
+                await setUserLimit.save();
                 return JSON.stringify(data);
             };
             const data = new short_url({ author: user.emailAddresses[0].emailAddress, destination_url: url, alias: random_alias });
             await data.save();
             const setUserLimit = await User.findOneAndUpdate({ email: user.emailAddresses[0].emailAddress }, { url_limit: getUserLimit.url_limit - 1 });
+            await setUserLimit.save();
             return JSON.stringify(data);
         }
         const searchAli = await short_url.findOne({ alias: ali });
@@ -41,6 +43,7 @@ export default async function ShortUrl({ url, ali }) {
         const data = new short_url({ author: user.emailAddresses[0].emailAddress, destination_url: url, alias: ali });
         await data.save();
         const setUserLimit = await User.findOneAndUpdate({ email: user.emailAddresses[0].emailAddress }, { url_limit: getUserLimit.url_limit - 1 });
+        await setUserLimit.save();
         return JSON.stringify(data);
     }
     catch (e) {
