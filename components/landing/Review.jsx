@@ -21,14 +21,14 @@ export default function Review() {
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-8 w-8">
                                     <AvatarImage src="https://github.com/agam-riyandana.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>AR</AvatarFallback>
                                 </Avatar>
                                 <div className="grid !gap-0">
                                     <h2 className="text-lg font-normal">Agam Riyandana</h2>
                                     <span className="-mt-1 text-sm text-muted-foreground">@agam-riyandana</span>
                                 </div>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-3 sm:text-base">Super reliable and fast. The custom alias feature is perfect for branding, and the analytics offer excellent insights. Love it!</p>
+                            <p className="text-sm text-muted-foreground mt-3 sm:text-base">This URL shortener is incredibly easy to use. With a clean and intuitive interface, I can shorten my links in seconds. It’s perfect for quickly sharing concise links without any hassle. Highly recommended for anyone who needs a reliable URL shortener!</p>
                         </div>
                     </CarouselItem>
                     <CarouselItem className="max-w-sm">
@@ -36,14 +36,14 @@ export default function Review() {
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-8 w-8">
                                     <AvatarImage src="https://github.com/r2hu1.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>RR</AvatarFallback>
                                 </Avatar>
                                 <div className="grid !gap-0">
                                     <h2 className="text-lg font-normal">Rahul Rajput :))</h2>
                                     <span className="-mt-1 text-sm text-muted-foreground">@r2hu1</span>
                                 </div>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-3 sm:text-base">Fantastic URL shortener! It's easy to use, and the analytics are great for tracking link performance. (im the coder :)))!</p>
+                            <p className="text-sm text-muted-foreground mt-3 sm:text-base">Speed is crucial for me, and this URL shortener delivers every time. It generates links almost instantly and has never failed me. I can rely on it for all my link shortening needs without worrying about downtime. A fantastic tool for anyone looking for self!</p>
                         </div>
                     </CarouselItem>
                     <CarouselItem className="max-w-sm">
@@ -51,14 +51,14 @@ export default function Review() {
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-8 w-8">
                                     <AvatarImage src="https://github.com/daya3611.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>DG</AvatarFallback>
                                 </Avatar>
                                 <div className="grid !gap-0">
                                     <h2 className="text-lg font-normal">Dayanand Gawade</h2>
                                     <span className="-mt-1 text-sm text-muted-foreground">@daya3611</span>
                                 </div>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-3 sm:text-base">Best URL shortener I've used. It's simple and effective, with excellent analytics for detailed performance tracking.</p>
+                            <p className="text-sm text-muted-foreground mt-3 sm:text-base">Security is a big concern for me, and this URL shortener meets all my expectations. It provides secure links and protects my data. I feel confident using it for my business communications. An excellent choice for anyone needing a secure URL shortener!</p>
                         </div>
                     </CarouselItem>
                 </CarouselContent>

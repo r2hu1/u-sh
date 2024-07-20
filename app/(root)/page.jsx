@@ -9,10 +9,10 @@ export default function Page() {
   return (
     <main>
       <Hero />
-      {/* <Review/> */}
       <Stats />
       <Feature />
       <Pricing />
+      <Review/>
     </main>
   )
 }
