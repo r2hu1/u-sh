@@ -40,9 +40,10 @@ export default function Header() {
                     <SheetHeader>
                         <SheetDescription className="mt-10">
                             <div className="grid gap-2">
-                                <Link className={cn(defaultClass, pathName == "/dashboard" && activeClass)} href="/">Dashboard</Link>
-                                <Link className={cn(defaultClass, pathName == "/links" && activeClass)} href="/">All Links</Link>
-                                <Link className={cn(defaultClass, pathName == "/statistics" && activeClass)} href="/">Statistics</Link>
+                                <Link onClick={()=>{setPathName("/")}} className={cn(defaultClass, pathName == "/" && activeClass)} href="/">Home</Link>
+                                <Link onClick={()=>{setPathName("/dashboard")}} className={cn(defaultClass, pathName == "/dashboard" && activeClass)} href="/dashboard">Dashboard</Link>
+                                <Link onClick={()=>{setPathName("/dashboard/links")}} className={cn(defaultClass, pathName == "/dashboard/links" && activeClass)} href="/dashboard/links">All Links</Link>
+                                <Link onClick={()=>{setPathName("/dashboard/statistics")}} className={cn(defaultClass, pathName == "/dashboard/statistics" && activeClass)} href="/dashboard/statistics">Statistics</Link>
                             </div>
                         </SheetDescription>
                     </SheetHeader>
