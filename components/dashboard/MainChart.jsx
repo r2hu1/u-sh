@@ -38,8 +38,9 @@ export default function MainChart() {
     const [allClicks] = await getUserData();
     setCclicks(allClicks);
   };
+  let vvisitors = cclicks > 0 ? cclicks - 1 : cclicks;
   const chartData = [
-    { browser: "clicks", visitors: cclicks - 1 , fill: "var(--color-safari)" },
+    { browser: "clicks", visitors: vvisitors , fill: "var(--color-safari)" },
   ]
   useEffect(() => {
     getAndSetClicks();
