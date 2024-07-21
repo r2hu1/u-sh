@@ -21,7 +21,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export default function ShortUrlForm() {
+export default function ShortUrlFormAndRecentLinks() {
     const [url, setUrl] = useState("");
     const [alias, setAlias] = useState("");
     const [shortedUrl, setShortedUrl] = useState("");
@@ -74,17 +74,18 @@ export default function ShortUrlForm() {
             try {
                 const data = await getRecentLinks();
                 setRectLinks(JSON.parse(data));
+                setLoading2(false);
             } catch (err) {
                 console.log(err);
+                setLoading2(false);
             }
         };
         fetchRecentLinks();
-        setLoading2(false);
     }, [!loading]);
 
     return (
         <>
-            <form method="post" onSubmit={handleSubmit} className="grid gap-3 px-4 py-4 border-border border rounded-lg">
+            <form method="post" onSubmit={handleSubmit} className="grid gap-3 px-4 py-4 border-border bg-card shadow-sm border rounded-lg">
                 <div className="mb-2">
                     <h2 className="text-lg">Short Link</h2>
                     <p className="text-sm text-muted-foreground">short your link in seconds.</p>
@@ -124,7 +125,7 @@ export default function ShortUrlForm() {
                     </AlertDialogContent>
                 </AlertDialog>
             </form>
-            <div className="grid gap-4 px-4 py-4 border-border border rounded-lg">
+            <div className="grid gap-4 px-4 py-4 border-border bg-card shadow-sm border rounded-lg">
                 <div>
                     <h2 className="text-lg">Recent Links</h2>
                     <p className="text-sm text-muted-foreground">list of yout recently five shortened links.</p>
