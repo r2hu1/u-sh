@@ -20,7 +20,7 @@ import {
 import { ChartContainer } from "../ui/chart"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { getUserClicks } from "@/server_functions/getUserClicks"
+import { getUserData } from "@/server_functions/getUserData"
 
 const chartConfig = {
   visitors: {
@@ -35,7 +35,7 @@ const chartConfig = {
 export default function MainChart() {
   const [cclicks, setCclicks] = useState(0);
   const getAndSetClicks = async () => {
-    const [allClicks] = await getUserClicks();
+    const [allClicks] = await getUserData();
     setCclicks(allClicks);
   };
   const chartData = [
