@@ -96,7 +96,7 @@ export default function page() {
     }, [isDeleted]);
     return (
         <main className="px-6 md:px-20 lg:px-32 py-10 grid gap-7">
-            <div className="grid gap-4 px-4 py-4 border-border border rounded-lg">
+            <div className="grid gap-4 px-4 py-4 border-border border rounded-lg bg-card shadow-sm">
                 <div>
                     <h2 className="text-lg">All Links</h2>
                     <p className="text-sm text-muted-foreground">list of yout lifetime shortened links.</p>
