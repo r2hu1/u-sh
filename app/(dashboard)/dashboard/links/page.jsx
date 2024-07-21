@@ -121,7 +121,7 @@ export default function page() {
                                             <span>https://{location.host}/{link.alias}</span> <ExternalLink className="h-3 w-3" />
                                         </Link>
                                         <div className="flex gap-2 items-center">
-                                            <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? Math.ceil(link.clicks / 2) : link.clicks} <Eye className="h-4 w-4" /></p>
+                                            <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? link.clicks - 1 : link.clicks} <Eye className="h-4 w-4" /></p>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="secondary" className="h-6 w-6" size="icon">
