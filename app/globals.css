@@ -68,10 +68,10 @@
     @apply bg-background text-foreground;
   }
   .linkList{
-    @apply border-b border-border
+    @apply border-b border-border border-dashed
   }
 
-  .linkList:nth-child(5){
+  .linkList:last-child{
     @apply border-0
   }
 }

@@ -1,10 +1,10 @@
 "use client";
 
-import getRecentLinks from "@/server_functions/getRecentLinks";
 import { ExternalLink, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import getRecentLinks from "@/server_functions/getRecentLinks";
 
 export default function RecentUrls() {
     const [rectLinks, setRectLinks] = useState([]);

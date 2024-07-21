@@ -1,7 +1,7 @@
 "use client";
 import { ClerkLoaded, ClerkLoading, SignOutButton, UserButton } from "@clerk/nextjs";
 import { Button } from "../ui/button";
-import { Loader2, PanelTopOpen } from "lucide-react";
+import { BarChart2, BarChart2Icon, Loader2, PanelTopOpen } from "lucide-react";
 import {
     Sheet,
     SheetContent,
@@ -33,7 +33,7 @@ export default function Header() {
             <Sheet>
                 <SheetTrigger asChild>
                     <div className="flex items-center justify-center h-10 w-10 rounded-lg cursor-pointer transition">
-                        <PanelTopOpen className="h-6 w-6 rotate-[90deg]" />
+                        <BarChart2Icon className="h-6 w-6 rotate-[90deg]" />
                     </div>
                 </SheetTrigger>
                 <SheetContent side="left" className="flex flex-col justify-between sm:max-w-xs">
