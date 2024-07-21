@@ -7,7 +7,7 @@ export default async function getRecentLinks() {
     const user = await currentUser();
     await connectToDb();
     try {
-        const data = await short_url.find({ author: user.emailAddresses[0].emailAddress }).sort({ createdAt: -1 }).limit(10);
+        const data = await short_url.find({ author: user.emailAddresses[0].emailAddress }).sort({ createdAt: -1 }).limit(5);
         return JSON.stringify(data);
     }
     catch (err) {
