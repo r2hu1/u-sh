@@ -50,7 +50,7 @@ export default function page() {
                             <p className="text-sm text-muted-foreground">No links found.</p>
                         </div>
                     ) : null}
-                    {top5Links.map((link) => (
+                    {top5Links.filter((link) => link.clicks).map((link) => (
                         <div className="grid gap-2 p-4 linkList">
                             <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
                                 <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks / 2} <Eye className="h-4 w-4" /></p>
