@@ -67,6 +67,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  .linkList{
+    @apply border-b border-border
+  }
+
+  .linkList:nth-child(5){
+    @apply border-0
+  }
 }
 
 .cl-avatarImage,

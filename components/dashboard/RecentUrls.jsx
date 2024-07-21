@@ -45,13 +45,12 @@ export default function RecentUrls() {
                 {rectLinks && (
                     <div>
                         {rectLinks.map((link) => (
-                            <div key={link.id} className="grid gap-4 p-4 border-b border-border">
+                            <div key={link.id} className="grid gap-4 p-4 linkList">
                                 <Link target="_blank" className="text-sm flex items-center justify-between w-full opacity-85 hover:underline" href={`https://${location.host}/${link.alias}`}>
                                     <span>https://{location.host}/{link.alias}</span> <ExternalLink className="h-3 w-3" />
                                 </Link>
                             </div>
                         ))}
-                        <Button className="w-full mt-2" asChild><Link href="/dashboard/links">View More</Link></Button>
                     </div>
                 )}
             </div>
