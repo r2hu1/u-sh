@@ -1,7 +1,13 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import {
+  Label,
+  PolarGrid,
+  PolarRadiusAxis,
+  RadialBar,
+  RadialBarChart,
+} from "recharts"
 
 import {
   Card,
@@ -10,80 +16,100 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-  { month: "January", views: 186 },
-  { month: "February", views: 305 },
-  { month: "March", views: 237 },
-  { month: "April", views: 73 },
-  { month: "May", views: 209 },
-  { month: "June", views: 214 },
-]
+} from "../ui/card"
+import { ChartContainer } from "../ui/chart"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { getUserClicks } from "@/server_functions/getUserClicks"
 
 const chartConfig = {
-  views: {
-    label: "views",
-    color: "hsl(var(--chart-1))",
+  visitors: {
+    label: "clicks",
   },
-};
+  safari: {
+    label: "clicks",
+    color: "hsl(var(--chart-2))",
+  },
+}
 
 export default function MainChart() {
+  const [cclicks, setCclicks] = useState(0);
+  const getAndSetClicks = async () => {
+    const [allClicks] = await getUserClicks();
+    setCclicks(allClicks);
+  };
+  const chartData = [
+    { browser: "clicks", visitors: cclicks, fill: "var(--color-safari)" },
+  ]
+  useEffect(() => {
+    getAndSetClicks();
+  }, []);
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg font-normal">Total visitors</CardTitle>
-        <CardDescription className="!-mt-[1px]">
-          showing total visitors for the last 6 months
-        </CardDescription>
+    <Card className="flex flex-col">
+      <CardHeader className="items-center pb-0">
+        <CardTitle className="text-lg font-normal">Lifetime Clicks</CardTitle>
+        <CardDescription className="!-mt-[1px]">to view more visit <Link href="/dashboard/statistics" className="text-blue-400">Statistics</Link></CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <AreaChart
-            accessibilityLayer
+      <CardContent className="flex-1 pb-0">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
+          <RadialBarChart
             data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
+            endAngle={100}
+            innerRadius={80}
+            outerRadius={140}
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+            <PolarGrid
+              gridType="circle"
+              radialLines={false}
+              stroke="none"
+              className="first:fill-muted last:fill-background"
+              polarRadius={[86, 74]}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Area
-              dataKey="views"
-              type="natural"
-              fill="var(--color-views)"
-              fillOpacity={0.4}
-              stroke="var(--color-views)"
-            />
-          </AreaChart>
+            <RadialBar dataKey="visitors" background />
+            <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+              <Label
+                content={({ viewBox }) => {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-4xl font-bold"
+                        >
+                          {chartData[0].visitors.toLocaleString()}
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
+                          Clicks
+                        </tspan>
+                      </text>
+                    )
+                  }
+                }}
+              />
+            </PolarRadiusAxis>
+          </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
-            </div>
-          </div>
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="flex items-center gap-2 font-medium leading-none">
+          Trending up by 5% this month <TrendingUp className="h-4 w-4" />
+        </div>
+        <div className="leading-none text-muted-foreground">
+          Showing total clicks for your links
         </div>
       </CardFooter>
     </Card>

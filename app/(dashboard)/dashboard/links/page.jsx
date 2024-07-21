@@ -136,7 +136,7 @@ export default function page() {
                                                     <DropdownMenuItem asChild>
                                                         <AlertDialog open={openEditing}>
                                                             <AlertDialogTrigger asChild>
-                                                                <div onClick={() => setOpenEditing(true)} className="relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">Edit <Pencil className="h-3 w-3" /></div>
+                                                                <div onClick={() => setOpenEditing(true)} className="relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">Edit <Pencil className="h-4 w-4" /></div>
                                                             </AlertDialogTrigger>
                                                             <AlertDialogContent>
                                                                 <AlertDialogHeader>
