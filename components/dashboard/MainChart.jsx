@@ -39,7 +39,7 @@ export default function MainChart() {
     setCclicks(allClicks);
   };
   const chartData = [
-    { browser: "clicks", visitors: cclicks, fill: "var(--color-safari)" },
+    { browser: "clicks", visitors: cclicks / 2, fill: "var(--color-safari)" },
   ]
   useEffect(() => {
     getAndSetClicks();
@@ -106,7 +106,7 @@ export default function MainChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5% this month <TrendingUp className="h-4 w-4" />
+          Looks like you are growing <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total clicks for your links
