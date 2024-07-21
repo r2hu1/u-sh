@@ -39,7 +39,7 @@ export default function MainChart() {
     setCclicks(allClicks);
   };
   const chartData = [
-    { browser: "clicks", visitors: cclicks / 2, fill: "var(--color-safari)" },
+    { browser: "clicks", visitors: Math.ceil(cclicks / 2) , fill: "var(--color-safari)" },
   ]
   useEffect(() => {
     getAndSetClicks();
