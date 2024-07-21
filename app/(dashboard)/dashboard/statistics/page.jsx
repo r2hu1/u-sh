@@ -14,7 +14,7 @@ export default function page() {
         const [allClicks, topLinks, allLinks] = await getUserData();
         setTotalLinks(JSON.parse(allLinks));
         setTop5Links(JSON.parse(topLinks));
-        setTotalClicks(allClicks -1);
+        setTotalClicks(allClicks > 0 ? allClicks - 1 : allClicks);
         setLoading(false);
     };
 
