@@ -28,7 +28,7 @@ const chartConfig = {
   },
   safari: {
     label: "clicks",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-1))",
   },
 }
 
