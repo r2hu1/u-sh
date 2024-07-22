@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'sonner';
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Bricolage_Grotesque({
     subsets: ["latin"],
@@ -34,7 +35,7 @@ export default function RootLayout({ children }) {
   <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
                         zIndex={160000}
                         showAtBottom={false}
-                        
+
                     />
                     <ThemeProvider
                         attribute="class"
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
                         disableTransitionOnChange
                     >
                         {children}
+                        <Analytics />
                         <Toaster />
                     </ThemeProvider>
                 </body>
