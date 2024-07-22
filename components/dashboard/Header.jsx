@@ -29,7 +29,7 @@ export default function Header() {
         getPageUrl();
     }, []);
     return (
-        <header className="px-6 md:px-20 lg:px-32 py-4 flex items-center justify-between">
+        <header className="px-6 md:px-20 lg:px-44 py-4 flex items-center justify-between">
             <Sheet>
                 <SheetTrigger asChild>
                     <div className="flex items-center justify-center h-10 w-10 rounded-lg cursor-pointer transition">
