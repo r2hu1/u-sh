@@ -103,7 +103,7 @@ export default function page() {
                 <div>
                     <div className="border border-border border-dashed rounded-lg">
                         {loading && (
-                            <div className="grid place-items-center h-52">
+                            <div className="grid place-items-center h-60">
                                 <Loader2 className="animate-spin h-4 w-5" />
                             </div>
                         )}
