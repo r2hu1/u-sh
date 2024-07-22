@@ -1,52 +1,86 @@
-## URL Shortner
+# URL Shortener
 
-Open-Source url shortener built with nextjs, mongodb, shadcn/ui & clerk auth with user dashboard and analytics!
+A powerful URL shortening service built with modern technologies including Next.js, MongoDB, Shadcn/UI, and Clerk for authentication. The project features a user dashboard for managing links and comprehensive analytics.
 
 ![preview](/public/preview-dark.png)
 
-## Tech Stack
+## Features
 
-- [Next.js](https://nextjs.org/)
-- [Shadcn/ui](https://ui.shadcn.com/)
-- [Mongodb](https://www.mongodb.com/)
-- [Clerk](https://www.clerk.com/)
+- **Next.js**: React framework for server-side rendering and static site generation.
+- **MongoDB**: NoSQL database for storing shortened URLs and user data.
+- **Shadcn/UI**: Component library for building user interfaces.
+- **Clerk Auth**: User authentication and management.
+- **User Dashboard**: Manage your shortened links, view analytics, and track performance.
+- **Analytics**: Get insights into link usage, clicks, and more.
 
+## Getting Started
 
-## Setup Instructions
+### Prerequisites
 
-- Fork This Repo
+Ensure you have the following installed:
 
-- Clone locally using cmd/pwsh
+- Node.js
+- MongoDB
+- Yarn or npm
 
-```bash
-git clone https://github.com/[username]/url-shortner
-```
+### Installation
 
-- Install Dependences
+1. Clone the repository:
 
-```bash
-npm install
-```
+   ```bash
+   git clone https://github.com/r2hu1/url-shortener.git
+   cd url-shortener
+   ```
 
-- Setup MongoDB
+2. Install dependencies:
 
-login/signup to cloud.mongodb.com and create your own database no need to create a collection get URI.
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
 
-- Setup Clerk
+3. Set up environment variables:
 
-login/signup to clerk.com and create your account get api keys.
+go to  `.env.example` file in the root of the project and add your values and rename it to `.env.local`:
+   
+### Running the Project
 
-- Go to `.env.example` fill the values and rename it to `.env.local`
+1. Start the development server:
 
-- Run `npm run dev`
+   ```bash
+   yarn dev
+   # or
+   npm run dev
+   ```
 
-- Open your browser and go to `http://localhost:3000`
+2. Open your browser and navigate to `http://localhost:3000`.
+
+## Usage
+
+### Authentication
+
+Sign up or log in using the authentication provided by Clerk. This will give you access to the user dashboard.
+
+### Dashboard
+
+Once authenticated, you can access your dashboard to:
+
+- **Create Short URLs**: Enter the long URL you want to shorten.
+- **Manage Links**: View, edit, or delete your shortened URLs.
+- **View Analytics**: Track the number of clicks, referrers, and more.
 
 ## Contributing
 
-- Fork this repo
-- Create your own feature / fix bug
-- Submit a PR
-- Create an issue if you have any questions
+We welcome contributions! Please follow these steps to contribute:
 
-Hope this helps out!
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature/your-feature`).
+6. Open a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
