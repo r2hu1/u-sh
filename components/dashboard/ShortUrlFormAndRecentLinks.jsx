@@ -76,7 +76,6 @@ export default function ShortUrlFormAndRecentLinks() {
                 setRectLinks(JSON.parse(data));
                 setLoading2(false);
             } catch (err) {
-                console.log(err);
                 setLoading2(false);
             }
         };
@@ -125,7 +124,8 @@ export default function ShortUrlFormAndRecentLinks() {
                     </AlertDialogContent>
                 </AlertDialog>
             </form>
-            <div className="grid gap-4 px-4 py-4 border-border bg-card shadow-sm border rounded-lg">
+
+            <div className="grid gap-4 px-4 py-4 border-border bg-card shadow-sm border rounded-lg h-fit">
                 <div>
                     <h2 className="text-lg">Recent Links</h2>
                     <p className="text-sm text-muted-foreground">list of yout recently five shortened links.</p>
