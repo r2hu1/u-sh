@@ -14,7 +14,7 @@ export default function page() {
         const [allClicks, topLinks, allLinks] = await getUserData();
         setTotalLinks(JSON.parse(allLinks));
         setTop5Links(JSON.parse(topLinks));
-        setTotalClicks(allClicks / 2);
+        setTotalClicks(allClicks > 0 ? allClicks - 1 : 0);
         setLoading(false);
     };
 
@@ -37,26 +37,31 @@ export default function page() {
             <div className="border border-border rounded-lg px-4 py-4 bg-card shadow-sm">
                 <div>
                     <h2 className="text-lg">Top 5 Links</h2>
-                    <p className="text-sm text-muted-foreground">the top 5 links by clicks</p>
+                    <p className="text-sm text-muted-foreground">the top five links by clicks</p>
                 </div>
                 <div className="border-dashed rounded-lg mt-4 border border-border">
                     {loading && (
-                        <div className="grid place-items-center h-52">
+                        <div className="grid place-items-center h-60">
                             <Loader2 className="animate-spin h-4 w-5" />
                         </div>
                     )}
                     {!loading && !top5Links.length ? (
-                        <div className="grid place-items-center h-52">
+                        <div className="grid place-items-center h-60">
                             <p className="text-sm text-muted-foreground">No links found.</p>
                         </div>
                     ) : null}
                     {top5Links.filter((link) => link.clicks).map((link) => (
                         <div className="grid gap-2 p-4 linkList">
                             <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks / 2} <Eye className="h-4 w-4" /></p>
+                                <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? link.clicks - 1 : link.clicks} <Eye className="h-4 w-4" /></p>
                             </Link>
                         </div>
                     ))}
+                    {!loading && !top5Links.filter((link) => link.clicks).length && 
+                        (<div className="grid gap-2 p-4 place-items-center h-60">
+                            <p className="text-sm text-muted-foreground">No links found.</p>
+                        </div>)
+                    }
                 </div>
             </div>
 
@@ -72,14 +77,14 @@ export default function page() {
                         </div>
                     )}
                     {!loading && !totalLinks.length ? (
-                        <div className="grid place-items-center h-52">
+                        <div className="grid place-items-center h-60">
                             <p className="text-sm text-muted-foreground">No links found.</p>
                         </div>
                     ) : null}
                     {totalLinks.map((link) => (
                         <div className="grid gap-2 p-4 linkList">
                             <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks / 2} <Eye className="h-4 w-4" /></p>
+                                <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? link.clicks - 1 : link.clicks} <Eye className="h-4 w-4" /></p>
                             </Link>
                         </div>
                     ))}
