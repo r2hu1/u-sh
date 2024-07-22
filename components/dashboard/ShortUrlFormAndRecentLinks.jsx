@@ -132,13 +132,13 @@ export default function ShortUrlFormAndRecentLinks() {
                 </div>
                 <div className="border border-dashed border-border rounded-lg">
                     {loading2 && (
-                        <div className="grid place-items-center h-52">
+                        <div className="grid place-items-center h-[246px]">
                             <Loader2 className="animate-spin h-4 w-5" />
                         </div>
                     )}
 
                     {!loading2 && rectLinks.length === 0 ? (
-                        <div className="grid place-items-center h-52">
+                        <div className="grid place-items-center h-[246px]">
                             <p className="text-sm text-muted-foreground">No links found.</p>
                         </div>
                     ) : null}
