@@ -48,11 +48,11 @@ export default function page() {
                                 <Loader2 className="animate-spin h-4 w-5" />
                             </div>
                         )}
-                        {!loading && !top5Links.length ? (
+                        {/* {!loading && !top5Links.length ? (
                             <div className="grid place-items-center h-60">
                                 <p className="text-sm text-muted-foreground">No links found.</p>
                             </div>
-                        ) : null}
+                        ) : null} */}
                         {top5Links.filter((link) => link.clicks).map((link) => (
                             <div className="grid gap-2 p-4 linkList">
                                 <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
