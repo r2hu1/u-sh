@@ -109,7 +109,7 @@ export default function page() {
                             </div>
                         )}
                         {!loading && !allLinks.length ? (
-                            <div className="grid place-items-center h-52">
+                            <div className="grid place-items-center h-60">
                                 <p className="text-sm text-muted-foreground">No links found.</p>
                             </div>
                         ) : null}
@@ -121,7 +121,7 @@ export default function page() {
                                             <span>https://{location.host}/{link.alias}</span> <ExternalLink className="h-3 w-3" />
                                         </Link>
                                         <div className="flex gap-2 items-center">
-                                            <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? link.clicks / 2 : link.clicks} <Eye className="h-4 w-4" /></p>
+                                            <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? link.clicks - 1 : link.clicks} <Eye className="h-4 w-4" /></p>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="secondary" className="h-6 w-6" size="icon">
@@ -158,7 +158,24 @@ export default function page() {
                                                     </DropdownMenuItem>
                                                     <DropdownMenuSeparator />
                                                     <DropdownMenuItem asChild>
-                                                        <div onClick={() => handleDelete(link._id)} className="flex items-center justify-between">Delete <Trash className="h-4 w-4" /></div>
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger asChild>
+                                                                <div className="relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">Delete <Trash className="h-4 w-4" /></div>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                                    <AlertDialogDescription>
+                                                                        This action cannot be undone. This will permanently delete this link.
+                                                                        <Input className="mt-2" defaultValue={`https://${location.host}/${link.alias}`} readOnly/>
+                                                                    </AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter className="w-full">
+                                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                    <AlertDialogAction onClick={() => handleDelete(link._id)}>Delete</AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                        </AlertDialog>
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
