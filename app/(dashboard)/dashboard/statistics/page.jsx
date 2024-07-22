@@ -3,6 +3,7 @@ import { getUserData } from "@/server_functions/getUserData";
 import { ExternalLink, Eye, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CountUp from "react-countup";
 
 export default function page() {
     const [totalLinks, setTotalLinks] = useState([]);
@@ -25,11 +26,11 @@ export default function page() {
         <main className="px-6 md:px-20 lg:px-44 py-10 grid gap-7">
             <div className="border rounded-lg grid grid-cols-2 bg-card shadow-sm">
                 <div className="text-center p-4 border-r border-border">
-                    <h2 className="text-2xl">{totalLinks.length}</h2>
+                    <h2 className="text-2xl"><CountUp end={totalLinks.length} start={0} /></h2>
                     <span className="text-sm text-muted-foreground">Links Created</span>
                 </div>
                 <div className="text-center p-4">
-                    <h2 className="text-2xl">{totalClicks}</h2>
+                    <h2 className="text-2xl"><CountUp end={totalClicks} start={0} /></h2>
                     <span className="text-sm text-muted-foreground">Lifetime Clicks</span>
                 </div>
             </div>
@@ -55,7 +56,7 @@ export default function page() {
                         {top5Links.filter((link) => link.clicks).map((link) => (
                             <div className="grid gap-2 p-4 linkList">
                                 <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? link.clicks - 1 : link.clicks} <Eye className="h-4 w-4" /></p>
+                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks - 1} start={0} /> <Eye className="h-4 w-4" /></p>
                                 </Link>
                             </div>
                         ))}
@@ -86,7 +87,7 @@ export default function page() {
                         {totalLinks.map((link) => (
                             <div className="grid gap-2 p-4 linkList">
                                 <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit">{link.clicks > 0 ? link.clicks - 1 : link.clicks} <Eye className="h-4 w-4" /></p>
+                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks - 1} start={0} /> <Eye className="h-4 w-4" /></p>
                                 </Link>
                             </div>
                         ))}
