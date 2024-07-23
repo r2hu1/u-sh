@@ -124,9 +124,9 @@ export default function Pricing() {
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button className="w-full">
+                         <Link href="https://pay.rahul.eu.org/" className={cn(buttonVariants({ variant: "default" }), "w-full")}>
                             Get Started
-                        </Button>
+                         </Link>
                     </CardFooter>
                 </Card>
             </div>
