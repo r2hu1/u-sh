@@ -25,11 +25,13 @@ Ensure you have the following installed:
 
 ### Installation
 
-1. Clone the repository:
+1. Fork the repository
+ 
+2. Clone the repository:
 
    ```bash
-   git clone https://github.com/r2hu1/url-shortener.git
-   cd url-shortener
+   git clone https://github.com/[username]/u-sh.git
+   cd u-sh
    ```
 
 2. Install dependencies:
