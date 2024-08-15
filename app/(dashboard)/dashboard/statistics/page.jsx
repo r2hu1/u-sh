@@ -39,8 +39,8 @@ export default function page() {
 
                 <div className="border h-fit border-border rounded-lg px-4 py-4 bg-card shadow-sm">
                     <div>
-                        <h2 className="text-lg">Top 5 Links</h2>
-                        <p className="text-sm text-muted-foreground">the top five links by clicks</p>
+                        <h2 className="text-lg">Top {top5Links.filter((link) => link.clicks).length} Links</h2>
+                        <p className="text-sm text-muted-foreground">the top {top5Links.filter((link) => link.clicks).length} links by clicks</p>
                     </div>
                     <div className="border-dashed rounded-lg mt-4 border border-border">
                         {loading && (
@@ -56,7 +56,7 @@ export default function page() {
                         {top5Links.filter((link) => link.clicks).map((link) => (
                             <div className="grid gap-2 p-4 linkList">
                                 <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks - 1} start={0} /> <Eye className="h-4 w-4" /></p>
+                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks > 2 ? link.clicks - 1 : link.clicks} start={0} /> <Eye className="h-4 w-4" /></p>
                                 </Link>
                             </div>
                         ))}
