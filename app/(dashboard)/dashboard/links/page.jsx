@@ -64,21 +64,22 @@ export default function page() {
 
         try {
             const data = await editOneById({ id: e.target.id.value, url: url, ali: alias });
-            if (data) {
+            if (!JSON.parse(data).message) {
                 toast.success("Link edited successfully");
                 setIsDeleted(true);
                 setTimeout(() => {
                     setIsDeleted(false);
                 }, 500);
+                setOpenEditing(false);
             } else {
-                toast.error("Something went wrong");
+                toast.error(JSON.parse(data).message);
             }
+            setIsEditing(false);
         }
         catch (e) {
+            setOpenEditing(false);
             toast.error("Something went wrong");
         }
-        setIsEditing(false);
-        setOpenEditing(false);
     }
 
     useEffect(() => {
@@ -120,7 +121,7 @@ export default function page() {
                                             <span>https://{location.host}/{link.alias}</span> <ExternalLink className="h-3 w-3" />
                                         </Link>
                                         <div className="flex gap-2 items-center">
-                                            <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks - 1} start={0} /> <Eye className="h-4 w-4" /></p>
+                                            <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks > 2 ? link.clicks - 1 : link.clicks} start={0} /> <Eye className="h-4 w-4" /></p>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="secondary" className="h-6 w-6" size="icon">
@@ -131,7 +132,7 @@ export default function page() {
                                                     <DropdownMenuItem asChild>
                                                         <div className="flex items-center justify-between" onClick={() => { navigator.clipboard.writeText(`https://${location.host}/${link.alias}`); toast.success("Copied to clipboard"); }}>Copy <Copy className="h-4 w-4" /></div>
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuSeparator />
+                                                    {/* <DropdownMenuSeparator /> */}
                                                     <DropdownMenuItem asChild>
                                                         <AlertDialog open={openEditing}>
                                                             <AlertDialogTrigger asChild>
@@ -159,7 +160,7 @@ export default function page() {
                                                     <DropdownMenuItem asChild>
                                                         <AlertDialog>
                                                             <AlertDialogTrigger asChild>
-                                                                <div className="relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">Delete <Trash className="h-4 w-4" /></div>
+                                                                <div className="relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-red-400 hover:text-red-400">Delete <Trash className="h-4 w-4" /></div>
                                                             </AlertDialogTrigger>
                                                             <AlertDialogContent>
                                                                 <AlertDialogHeader>

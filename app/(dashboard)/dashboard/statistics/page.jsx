@@ -15,7 +15,7 @@ export default function page() {
         const [allClicks, topLinks, allLinks] = await getUserData();
         setTotalLinks(JSON.parse(allLinks));
         setTop5Links(JSON.parse(topLinks));
-        setTotalClicks(allClicks > 0 ? allClicks - 1 : 0);
+        setTotalClicks(allClicks > 2 ? allClicks - 1 : 0);
         setLoading(false);
     };
 
@@ -87,7 +87,7 @@ export default function page() {
                         {totalLinks.map((link) => (
                             <div className="grid gap-2 p-4 linkList">
                                 <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks - 1} start={0} /> <Eye className="h-4 w-4" /></p>
+                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks > 2 ? link.clicks - 1 : link.clicks} start={0} /> <Eye className="h-4 w-4" /></p>
                                 </Link>
                             </div>
                         ))}
