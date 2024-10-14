@@ -23,13 +23,13 @@ export default function Stats() {
   }, []);
 
   return (
-    <section className="mb-14 mt-3 px-6 md:px-20 lg:px-32 text-center w-fit mx-auto">
-      <div className="flex flex-wrap gap-5 items-center justify-center">
+    <section className="mb-20 py-16 rounded-sm bg-secondary/30 mt-10 px-14 md:px-20 lg:px-32 text-center sm:w-fit w-full sm:mx-auto">
+      <div className="flex flex-wrap gap-5 items-center justify-between sm:justify-center">
         <div className="grid !gap-0">
           <div className='flex items-center justify-center'>
             {!loading ? (
               <>
-                <h3 className="text-2xl md:text-4xl">{users}</h3>
+                <h3 className="text-3xl md:text-4xl">{users}</h3>
                 <span className='text-2xl md:text-3xl'>+</span>
               </>
             ) : (
@@ -42,7 +42,7 @@ export default function Stats() {
           <div className='flex items-center justify-center'>
             {!loading ? (
               <>
-                <h3 className="text-2xl md:text-4xl">{links}</h3>
+                <h3 className="text-3xl md:text-4xl">{links}</h3>
                 <span className='text-2xl md:text-3xl'>+</span>
               </>
             ) : (
@@ -55,7 +55,7 @@ export default function Stats() {
           <div className='flex items-center justify-center'>
             {!loading ? (
               <>
-                <h3 className="text-2xl md:text-4xl">{clicks}</h3>
+                <h3 className="text-3xl md:text-4xl">{clicks}</h3>
                 <span className='text-2xl md:text-3xl'>+</span>
               </>
             ) : (
