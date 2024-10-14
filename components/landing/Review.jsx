@@ -7,10 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Review() {
     return (
-        <section className="px-6 md:px-20 lg:px-32 mb-16 mt-4 max-w-5xl mx-auto">
-            <div className="text-center mb-7 grid gap-2 max-w-xs md:max-w-lg mx-auto lg:max-w-xl">
-                <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl text-center">What our <span className="underline underline-offset-[5px] decoration-blue-400">customers</span> are <span className="underline underline-offset-[5px] decoration-blue-400">saying</span>?</h2>
-                <p className="text-muted-foreground mx-auto text-sm sm:text-base text-center max-w-md">
+        <section className="px-6 md:px-20 lg:px-32 mb-16 max-w-5xl sm:mx-auto">
+            <div className="sm:text-center mb-7 grid gap-2 max-w-xs md:max-w-lg sm:mx-auto lg:max-w-xl">
+                <h2 className="text-3xl font-semibold lg:text-5xl sm:text-center">What our <span className="underline underline-offset-[5px] decoration-blue-400">customers</span> are <span className="underline underline-offset-[5px] decoration-blue-400">saying</span>?</h2>
+                <p className="text-muted-foreground mx-auto text-base md:text-lg sm:text-center max-w-md">
                     See what our customers are saying about us. not an actual customer just to show.
                 </p>
             </div>
