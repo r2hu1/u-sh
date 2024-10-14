@@ -2,9 +2,9 @@ import { AreaChart, Shapes, Signature, Unlink } from "lucide-react";
 export default function Feature() {
     return (
         <section className="px-6 md:px-20 lg:px-32 mb-10">
-            <div className="grid gap-2 max-w-xs md:max-w-lg mx-auto lg:max-w-xl">
-                <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl text-center">What it <span className="underline underline-offset-[5px] decoration-blue-400">requires</span> & How to get <span className="underline underline-offset-[5px] decoration-blue-400">started</span>?</h2>
-                <p className="text-muted-foreground mx-auto text-sm sm:text-base text-center max-w-md">
+            <div className="grid gap-2 max-w-xs md:max-w-lg sm:mx-auto lg:max-w-xl">
+                <h2 className="text-3xl font-semibold lg:text-5xl sm:text-center">What it <span className="underline underline-offset-[5px] decoration-blue-400">requires</span> & How to get <span className="underline underline-offset-[5px] decoration-blue-400">started</span>?</h2>
+                <p className="text-muted-foreground mx-auto text-base md:text-lg sm:text-center max-w-md">
                     The usage of this url shortener is easy and completely free without any subscription need.
                 </p>
             </div>
