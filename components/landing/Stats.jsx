@@ -23,7 +23,7 @@ export default function Stats() {
   }, []);
 
   return (
-    <section className="mb-20 py-16 rounded-sm bg-secondary/30 mt-10 px-6 md:px-20 lg:px-32 text-center sm:w-fit w-full sm:mx-auto">
+    <section className="mb-20 py-16 rounded-sm bg-secondary/30 md:bg-transparent mt-10 px-6 md:px-20 lg:px-32 text-center sm:w-fit w-full sm:mx-auto">
       <div className="flex gap-5 items-center justify-center">
         <div className="grid !gap-0">
           <div className='flex items-center justify-center'>
