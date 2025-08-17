@@ -2,7 +2,7 @@
 
 A powerful URL shortening service built with modern technologies including Next.js, MongoDB, Shadcn/UI, and Clerk for authentication. The project features a user dashboard for managing links and comprehensive analytics.
 
-![preview](/public/preview-dark.png)
+![preview](/public/preview.png)
 
 ## Features
 
@@ -26,7 +26,7 @@ Ensure you have the following installed:
 ### Installation
 
 1. Fork the repository
- 
+
 2. Clone the repository:
 
    ```bash
@@ -45,7 +45,7 @@ Ensure you have the following installed:
 3. Set up environment variables:
 
 go to  `.env.example` file in the root of the project and add your values and rename it to `.env.local`:
-   
+
 ### Running the Project
 
 1. Start the development server:
