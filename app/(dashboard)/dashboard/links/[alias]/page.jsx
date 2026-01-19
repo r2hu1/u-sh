@@ -113,7 +113,7 @@ export default function LinkAnalyticsPage() {
         }
     }, [clickLogPage, alias]);
     
-    // Format timestamp helper - displays in UTC
+    // Format timestamp helper - displays in user's local timezone
     const formatTimestamp = (timestamp) => {
         const date = new Date(timestamp);
         return date.toLocaleString('en-US', {
@@ -122,9 +122,8 @@ export default function LinkAnalyticsPage() {
             year: 'numeric',
             hour: 'numeric',
             minute: '2-digit',
-            hour12: true,
-            timeZone: 'UTC'
-        }) + ' UTC';
+            hour12: true
+        });
     };
     
     // Format relative time helper
