@@ -24,7 +24,7 @@ export default function Hero() {
 				</p>
 				<div className="flex items-center sm:justify-center flex-wrap gap-3 mt-3">
 					<Link
-						href="https://github.com/r2hu1/u-sh"
+						href="https://github.com/Agamya-Samuel/url-shortner"
 						className={cn(
 							buttonVariants({ variant: "outline" }),
 							"flex items-center gap-1",
