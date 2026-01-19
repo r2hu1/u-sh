@@ -103,7 +103,8 @@ export async function GET(request, { params }) {
         click_event.create({
             alias: id,
             timestamp: new Date(),
-            ip_hash: ipHash,
+            ip: ip, // Store actual IP address
+            ip_hash: ipHash, // Store hashed IP for privacy-compliant unique visitor tracking
             country: country,
             city: city,
             device_type: normalizedDeviceType,

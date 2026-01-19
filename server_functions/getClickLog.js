@@ -47,13 +47,15 @@ export const getClickLog = async (alias = null, page = 1, limit = 20) => {
             .sort({ timestamp: -1 })
             .skip(skip)
             .limit(limit)
-            .select("timestamp country city device_type browser os referrer")
+            .select("timestamp ip ip_hash country city device_type browser os referrer")
             .lean();
         
         // Format the clicks data
         const formattedClicks = clicks.map(click => ({
             id: click._id.toString(),
             timestamp: click.timestamp,
+            ip: click.ip || "unknown",
+            ip_hash: click.ip_hash || "",
             country: click.country || "Unknown",
             city: click.city || "Unknown",
             device: click.device_type || "unknown",

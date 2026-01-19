@@ -484,6 +484,7 @@ export default function LinkAnalyticsPage() {
                                     <thead>
                                         <tr className="border-b">
                                             <th className="text-left p-2">Timestamp</th>
+                                            <th className="text-left p-2">IP Address</th>
                                             <th className="text-left p-2">Location</th>
                                             <th className="text-left p-2">Device</th>
                                             <th className="text-left p-2">Browser</th>
@@ -500,6 +501,16 @@ export default function LinkAnalyticsPage() {
                                                         <span className="text-xs text-muted-foreground">
                                                             {formatRelativeTime(click.timestamp)}
                                                         </span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="flex flex-col">
+                                                        <span className="font-mono text-sm">{click.ip}</span>
+                                                        {click.ip_hash && (
+                                                            <span className="text-xs text-muted-foreground font-mono">
+                                                                Hash: {click.ip_hash.substring(0, 8)}...
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="p-2">

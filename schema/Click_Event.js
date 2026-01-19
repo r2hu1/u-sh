@@ -9,7 +9,11 @@ export const clickEventSchema = new Schema({
     // Timestamp of the click (indexed for time-series queries)
     timestamp: { type: Date, default: Date.now, index: true },
     
+    // IP address (stored for analytics and geolocation)
+    ip: { type: String, default: "unknown" },
+    
     // Hashed IP address for privacy (using SHA-256)
+    // Used for unique visitor counting without exposing actual IPs
     ip_hash: { type: String, required: true },
     
     // Geographic data from IP geolocation
