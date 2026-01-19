@@ -1,87 +1,120 @@
 "use client";
-import { getUserData } from "@/server_functions/getUserData";
-import { ExternalLink, Eye, Loader2 } from "lucide-react";
-import Link from "next/link";
+
 import { useEffect, useState } from "react";
-import CountUp from "react-countup";
+import { useParams, useRouter } from "next/navigation";
+import { Loader2, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
+import { getLinkAnalytics } from "@/server_functions/getLinkAnalytics";
 import { getTimeSeriesData } from "@/server_functions/getTimeSeriesData";
 import { getGeographicData } from "@/server_functions/getGeographicData";
 import { getDeviceData } from "@/server_functions/getDeviceData";
 import { getReferrerData } from "@/server_functions/getReferrerData";
 import { getUniqueVisitors } from "@/server_functions/getUniqueVisitors";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
+import CountUp from "react-countup";
 
-export default function page() {
-    const [totalLinks, setTotalLinks] = useState([]);
-    const [top5Links, setTop5Links] = useState([]);
-    const [totalClicks, setTotalClicks] = useState(0);
-    const [loading, setLoading] = useState(true);
+/**
+ * Individual link analytics page
+ * Shows detailed analytics for a specific shortened link
+ */
+export default function LinkAnalyticsPage() {
+    const params = useParams();
+    const router = useRouter();
+    const alias = params.alias;
     
-    // New analytics state
+    const [loading, setLoading] = useState(true);
+    const [linkData, setLinkData] = useState(null);
     const [timeSeriesData, setTimeSeriesData] = useState([]);
     const [geographicData, setGeographicData] = useState({ countries: [], cities: [] });
     const [deviceData, setDeviceData] = useState({ devices: [], browsers: [], os: [] });
     const [referrerData, setReferrerData] = useState([]);
     const [uniqueVisitors, setUniqueVisitors] = useState({ unique: 0, total: 0 });
-    const [analyticsLoading, setAnalyticsLoading] = useState(true);
-
-    const getAllData = async () => {
-        const [allClicks, topLinks, allLinks] = await getUserData();
-        setTotalLinks(JSON.parse(allLinks));
-        setTop5Links(JSON.parse(topLinks));
-        setTotalClicks(allClicks > 2 ? allClicks - 1 : 0);
-        setLoading(false);
-    };
     
-    const getAnalyticsData = async () => {
-        try {
-            // Fetch all analytics data in parallel
-            const [timeData, geoData, devData, refData, uniqueData] = await Promise.all([
-                getTimeSeriesData(null, "day", 30),
-                getGeographicData(null, 10),
-                getDeviceData(null),
-                getReferrerData(null, 10),
-                getUniqueVisitors(null)
-            ]);
-            
-            setTimeSeriesData(timeData);
-            setGeographicData(geoData);
-            setDeviceData(devData);
-            setReferrerData(refData);
-            setUniqueVisitors(uniqueData);
-            setAnalyticsLoading(false);
-        } catch (err) {
-            console.error("Error loading analytics:", err);
-            setAnalyticsLoading(false);
-        }
-    };
-
     useEffect(() => {
-        getAllData();
-        getAnalyticsData();
-    }, []);
+        const fetchAnalytics = async () => {
+            try {
+                // Fetch all analytics data for this specific link
+                const [linkInfo, timeData, geoData, devData, refData, uniqueData] = await Promise.all([
+                    getLinkAnalytics(alias),
+                    getTimeSeriesData(alias, "day", 30),
+                    getGeographicData(alias, 10),
+                    getDeviceData(alias),
+                    getReferrerData(alias, 10),
+                    getUniqueVisitors(alias)
+                ]);
+                
+                if (!linkInfo) {
+                    // Link doesn't exist or doesn't belong to user
+                    router.push("/dashboard/links");
+                    return;
+                }
+                
+                setLinkData(linkInfo);
+                setTimeSeriesData(timeData);
+                setGeographicData(geoData);
+                setDeviceData(devData);
+                setReferrerData(refData);
+                setUniqueVisitors(uniqueData);
+                setLoading(false);
+            } catch (err) {
+                console.error("Error loading analytics:", err);
+                setLoading(false);
+            }
+        };
+        
+        if (alias) {
+            fetchAnalytics();
+        }
+    }, [alias, router]);
     
     // Chart colors
     const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
     
+    if (loading) {
+        return (
+            <main className="px-6 md:px-20 lg:px-44 py-10">
+                <div className="grid place-items-center h-96">
+                    <Loader2 className="animate-spin h-8 w-8" />
+                </div>
+            </main>
+        );
+    }
+    
+    if (!linkData) {
+        return null;
+    }
+    
     return (
         <main className="px-6 md:px-20 lg:px-44 py-10 grid gap-7">
+            {/* Header with back button */}
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/dashboard/links">
+                        <ArrowLeft className="h-4 w-4" />
+                    </Link>
+                </Button>
+                <div>
+                    <h1 className="text-2xl font-bold">Link Analytics</h1>
+                    <p className="text-sm text-muted-foreground">
+                        {typeof window !== 'undefined' && `https://${window.location.host}/${alias}`}
+                    </p>
+                </div>
+            </div>
+            
+            {/* Summary Stats */}
             <div className="border rounded-lg grid grid-cols-2 md:grid-cols-4 bg-card shadow-sm">
                 <div className="text-center p-4 border-r border-border">
-                    <h2 className="text-2xl"><CountUp end={totalLinks.length} start={0} /></h2>
-                    <span className="text-sm text-muted-foreground">Links Created</span>
-                </div>
-                <div className="text-center p-4 border-r border-border">
-                    <h2 className="text-2xl"><CountUp end={totalClicks} start={0} /></h2>
+                    <h2 className="text-2xl"><CountUp end={linkData.totalClicks} start={0} /></h2>
                     <span className="text-sm text-muted-foreground">Total Clicks</span>
                 </div>
                 <div className="text-center p-4 border-r border-border">
                     <h2 className="text-2xl"><CountUp end={uniqueVisitors.unique} start={0} /></h2>
                     <span className="text-sm text-muted-foreground">Unique Visitors</span>
                 </div>
-                <div className="text-center p-4">
+                <div className="text-center p-4 border-r border-border">
                     <h2 className="text-2xl">
                         {uniqueVisitors.total > 0 
                             ? ((uniqueVisitors.unique / uniqueVisitors.total) * 100).toFixed(1)
@@ -89,20 +122,20 @@ export default function page() {
                     </h2>
                     <span className="text-sm text-muted-foreground">Unique Rate</span>
                 </div>
+                <div className="text-center p-4">
+                    <h2 className="text-2xl">{geographicData.countries.length}</h2>
+                    <span className="text-sm text-muted-foreground">Countries</span>
+                </div>
             </div>
             
             {/* Time Series Chart */}
             <Card>
                 <CardHeader>
                     <CardTitle>Clicks Over Time (Last 30 Days)</CardTitle>
-                    <CardDescription>Daily click trends for all your links</CardDescription>
+                    <CardDescription>Daily click trends for this link</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {analyticsLoading ? (
-                        <div className="grid place-items-center h-60">
-                            <Loader2 className="animate-spin h-4 w-5" />
-                        </div>
-                    ) : timeSeriesData.length > 0 ? (
+                    {timeSeriesData.length > 0 ? (
                         <ChartContainer config={{ clicks: { label: "Clicks" } }}>
                             <LineChart data={timeSeriesData}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -127,11 +160,7 @@ export default function page() {
                     <CardDescription>Geographic distribution of clicks</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {analyticsLoading ? (
-                        <div className="grid place-items-center h-60">
-                            <Loader2 className="animate-spin h-4 w-5" />
-                        </div>
-                    ) : geographicData.countries.length > 0 ? (
+                    {geographicData.countries.length > 0 ? (
                         <ChartContainer config={{ clicks: { label: "Clicks" } }}>
                             <BarChart data={geographicData.countries}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -157,11 +186,7 @@ export default function page() {
                         <CardDescription>Mobile vs Desktop vs Tablet</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {analyticsLoading ? (
-                            <div className="grid place-items-center h-60">
-                                <Loader2 className="animate-spin h-4 w-5" />
-                            </div>
-                        ) : deviceData.devices.length > 0 ? (
+                        {deviceData.devices.length > 0 ? (
                             <ChartContainer config={{ clicks: { label: "Clicks" } }}>
                                 <PieChart>
                                     <Pie
@@ -195,11 +220,7 @@ export default function page() {
                         <CardDescription>Browser distribution</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {analyticsLoading ? (
-                            <div className="grid place-items-center h-60">
-                                <Loader2 className="animate-spin h-4 w-5" />
-                            </div>
-                        ) : deviceData.browsers.length > 0 ? (
+                        {deviceData.browsers.length > 0 ? (
                             <ChartContainer config={{ clicks: { label: "Clicks" } }}>
                                 <BarChart data={deviceData.browsers}>
                                     <CartesianGrid strokeDasharray="3 3" />
@@ -226,11 +247,7 @@ export default function page() {
                         <CardDescription>OS distribution</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {analyticsLoading ? (
-                            <div className="grid place-items-center h-60">
-                                <Loader2 className="animate-spin h-4 w-5" />
-                            </div>
-                        ) : deviceData.os.length > 0 ? (
+                        {deviceData.os.length > 0 ? (
                             <ChartContainer config={{ clicks: { label: "Clicks" } }}>
                                 <PieChart>
                                     <Pie
@@ -264,11 +281,7 @@ export default function page() {
                         <CardDescription>Where your clicks come from</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {analyticsLoading ? (
-                            <div className="grid place-items-center h-60">
-                                <Loader2 className="animate-spin h-4 w-5" />
-                            </div>
-                        ) : referrerData.length > 0 ? (
+                        {referrerData.length > 0 ? (
                             <div className="space-y-2">
                                 {referrerData.map((ref, index) => (
                                     <div key={index} className="flex items-center justify-between p-2 border rounded">
@@ -285,66 +298,7 @@ export default function page() {
                     </CardContent>
                 </Card>
             </div>
-
-            <div className="grid gap-7 md:gap-3 md:grid-cols-2">
-
-                <div className="border h-fit border-border rounded-lg px-4 py-4 bg-card shadow-sm">
-                    <div>
-                        <h2 className="text-lg">Top {top5Links.filter((link) => link.clicks).length} Links</h2>
-                        <p className="text-sm text-muted-foreground">the top {top5Links.filter((link) => link.clicks).length} links by clicks</p>
-                    </div>
-                    <div className="border-dashed rounded-lg mt-4 border border-border">
-                        {loading && (
-                            <div className="grid place-items-center h-60">
-                                <Loader2 className="animate-spin h-4 w-5" />
-                            </div>
-                        )}
-                        {/* {!loading && !top5Links.length ? (
-                            <div className="grid place-items-center h-60">
-                                <p className="text-sm text-muted-foreground">No links found.</p>
-                            </div>
-                        ) : null} */}
-                        {top5Links.filter((link) => link.clicks).map((link) => (
-                            <div key={link._id} className="grid gap-2 p-4 linkList">
-                                <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks > 2 ? link.clicks - 1 : link.clicks} start={0} /> <Eye className="h-4 w-4" /></p>
-                                </Link>
-                            </div>
-                        ))}
-                        {!loading && !top5Links.filter((link) => link.clicks).length &&
-                            (<div className="grid gap-2 p-4 place-items-center h-60">
-                                <p className="text-sm text-muted-foreground">No links found.</p>
-                            </div>)
-                        }
-                    </div>
-                </div>
-
-                <div className="border h-fit border-border rounded-lg px-4 py-4 bg-card shadow-sm">
-                    <div>
-                        <h2 className="text-lg">All Links & Clicks</h2>
-                        <p className="text-sm text-muted-foreground">all your links and their clicks</p>
-                    </div>
-                    <div className="border-dashed rounded-lg mt-4 border border-border">
-                        {loading && (
-                            <div className="grid place-items-center h-60">
-                                <Loader2 className="animate-spin h-4 w-5" />
-                            </div>
-                        )}
-                        {!loading && !totalLinks.length ? (
-                            <div className="grid place-items-center h-60">
-                                <p className="text-sm text-muted-foreground">No links found.</p>
-                            </div>
-                        ) : null}
-                        {totalLinks.map((link) => (
-                            <div key={link._id} className="grid gap-2 p-4 linkList">
-                                <Link target="_blank" className="text-sm opacity-85 flex items-center justify-between" href={`https://${location.host}/${link.alias}`}>
-                                    <span className="hover:underline">https://{location.host}/{link.alias}</span> <p className="text-sm text-muted-foreground flex items-center gap-1 bg-accent/50 rounded-full px-2 cursor-pointer py-1 w-fit"><CountUp end={link.clicks > 2 ? link.clicks - 1 : link.clicks} start={0} /> <Eye className="h-4 w-4" /></p>
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
         </main>
-    )
+    );
 }
+
