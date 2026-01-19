@@ -92,6 +92,32 @@ export default function page() {
         return `${hour - 12}pm`;
     };
     
+    // Convert UTC hour to user's local timezone hour
+    const convertUTCToLocalHour = (utcHour) => {
+        // Create a date object for today at the UTC hour
+        const now = new Date();
+        const utcDate = new Date(Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate(),
+            utcHour,
+            0,
+            0
+        ));
+        
+        // Get the local hour from this UTC date
+        return utcDate.getHours();
+    };
+    
+    // Convert peak hours from UTC to user's local timezone
+    const convertPeakHoursToLocal = (peakHoursData) => {
+        return peakHoursData.map(item => ({
+            ...item,
+            localHour: convertUTCToLocalHour(item.hour),
+            hour: convertUTCToLocalHour(item.hour) // Use local hour for display
+        }));
+    };
+    
     return (
         <main className="px-6 md:px-20 lg:px-44 py-10 grid gap-7">
             {/* Header with refresh button */}
@@ -395,7 +421,7 @@ export default function page() {
             <Card>
                 <CardHeader>
                     <CardTitle>Hourly Breakdown</CardTitle>
-                    <CardDescription>Clicks by hour of day across all links (last 30 days)</CardDescription>
+                    <CardDescription>Clicks by hour of day across all links (last 30 days) - {Intl.DateTimeFormat().resolvedOptions().timeZone}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {analyticsLoading ? (
@@ -404,26 +430,19 @@ export default function page() {
                         </div>
                     ) : hourlyBreakdown.length > 0 ? (
                         <ChartContainer config={{ clicks: { label: "Clicks" } }}>
-                            <BarChart data={hourlyBreakdown}>
+                            <BarChart data={hourlyBreakdown.map(item => ({
+                                ...item,
+                                hour: convertUTCToLocalHour(item.hour)
+                            }))}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis 
                                     dataKey="hour" 
-                                    tickFormatter={(value) => {
-                                        if (value === 0) return "12am";
-                                        if (value < 12) return `${value}am`;
-                                        if (value === 12) return "12pm";
-                                        return `${value - 12}pm`;
-                                    }}
+                                    tickFormatter={(value) => formatHour(value)}
                                 />
                                 <YAxis />
                                 <ChartTooltip 
                                     content={<ChartTooltipContent />}
-                                    labelFormatter={(value) => {
-                                        if (value === 0) return "12am";
-                                        if (value < 12) return `${value}am`;
-                                        if (value === 12) return "12pm";
-                                        return `${value - 12}pm`;
-                                    }}
+                                    labelFormatter={(value) => formatHour(value)}
                                 />
                                 <Bar dataKey="clicks" fill="hsl(var(--chart-1))" />
                             </BarChart>
@@ -443,8 +462,8 @@ export default function page() {
                         <CardTitle>Peak Hours of Day</CardTitle>
                         <CardDescription>
                             {peakHours.topHour 
-                                ? `Peak hour: ${formatHour(peakHours.topHour.hour)} (${peakHours.topHour.clicks} clicks)`
-                                : "Busiest hours across all links"}
+                                ? `Peak hour: ${formatHour(convertUTCToLocalHour(peakHours.topHour.hour))} (${peakHours.topHour.clicks} clicks) - ${Intl.DateTimeFormat().resolvedOptions().timeZone}`
+                                : `Busiest hours across all links - ${Intl.DateTimeFormat().resolvedOptions().timeZone}`}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -454,7 +473,7 @@ export default function page() {
                             </div>
                         ) : peakHours.peakHours.length > 0 ? (
                             <ChartContainer config={{ clicks: { label: "Clicks" } }}>
-                                <BarChart data={peakHours.peakHours}>
+                                <BarChart data={convertPeakHoursToLocal(peakHours.peakHours)}>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis 
                                         dataKey="hour" 

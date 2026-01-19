@@ -113,7 +113,7 @@ export default function LinkAnalyticsPage() {
         }
     }, [clickLogPage, alias]);
     
-    // Format timestamp helper
+    // Format timestamp helper - displays in UTC
     const formatTimestamp = (timestamp) => {
         const date = new Date(timestamp);
         return date.toLocaleString('en-US', {
@@ -122,8 +122,9 @@ export default function LinkAnalyticsPage() {
             year: 'numeric',
             hour: 'numeric',
             minute: '2-digit',
-            hour12: true
-        });
+            hour12: true,
+            timeZone: 'UTC'
+        }) + ' UTC';
     };
     
     // Format relative time helper
@@ -148,6 +149,32 @@ export default function LinkAnalyticsPage() {
         if (hour < 12) return `${hour}am`;
         if (hour === 12) return "12pm";
         return `${hour - 12}pm`;
+    };
+    
+    // Convert UTC hour to user's local timezone hour
+    const convertUTCToLocalHour = (utcHour) => {
+        // Create a date object for today at the UTC hour
+        const now = new Date();
+        const utcDate = new Date(Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate(),
+            utcHour,
+            0,
+            0
+        ));
+        
+        // Get the local hour from this UTC date
+        return utcDate.getHours();
+    };
+    
+    // Convert peak hours from UTC to user's local timezone
+    const convertPeakHoursToLocal = (peakHoursData) => {
+        return peakHoursData.map(item => ({
+            ...item,
+            localHour: convertUTCToLocalHour(item.hour),
+            hour: convertUTCToLocalHour(item.hour) // Use local hour for display
+        }));
     };
     
     // Chart colors
@@ -561,12 +588,15 @@ export default function LinkAnalyticsPage() {
             <Card>
                 <CardHeader>
                     <CardTitle>Hourly Breakdown</CardTitle>
-                    <CardDescription>Clicks by hour of day (last 30 days)</CardDescription>
+                    <CardDescription>Clicks by hour of day (last 30 days) - {Intl.DateTimeFormat().resolvedOptions().timeZone}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {hourlyBreakdown.length > 0 ? (
                         <ChartContainer config={{ clicks: { label: "Clicks" } }}>
-                            <BarChart data={hourlyBreakdown}>
+                            <BarChart data={hourlyBreakdown.map(item => ({
+                                ...item,
+                                hour: convertUTCToLocalHour(item.hour)
+                            }))}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis 
                                     dataKey="hour" 
@@ -595,14 +625,14 @@ export default function LinkAnalyticsPage() {
                         <CardTitle>Peak Hours of Day</CardTitle>
                         <CardDescription>
                             {peakHours.topHour 
-                                ? `Peak hour: ${formatHour(peakHours.topHour.hour)} (${peakHours.topHour.clicks} clicks)`
-                                : "Busiest hours"}
+                                ? `Peak hour: ${formatHour(convertUTCToLocalHour(peakHours.topHour.hour))} (${peakHours.topHour.clicks} clicks) - Your Timezone`
+                                : "Busiest hours - Your Timezone"}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         {peakHours.peakHours.length > 0 ? (
                             <ChartContainer config={{ clicks: { label: "Clicks" } }}>
-                                <BarChart data={peakHours.peakHours}>
+                                <BarChart data={convertPeakHoursToLocal(peakHours.peakHours)}>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis 
                                         dataKey="hour" 
