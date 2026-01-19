@@ -12,8 +12,57 @@ const inter = Bricolage_Grotesque({
 });
 
 export const metadata = {
-    title: "URL Shortner",
-    description: "Open-Source url shortener built with nextjs & mongodb, track your link's clicks, free for lifetime!",
+    title: "URL Shortener - Free Link Shortener with Analytics",
+    description: "Open-Source URL shortener built with Next.js & MongoDB. Track your link's clicks, get detailed analytics, and shorten URLs for free. Lifetime free service with advanced features.",
+    keywords: ["URL shortener", "link shortener", "short links", "analytics", "click tracking", "free", "open source", "Next.js", "MongoDB"],
+    authors: [{ name: "Agamya Samuel" }],
+    creator: "URL Shortener",
+    publisher: "URL Shortener",
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+    metadataBase: new URL('https://s.agamya.dev'),
+    alternates: {
+        canonical: '/',
+    },
+    openGraph: {
+        title: "URL Shortener - Free Link Shortener with Analytics",
+        description: "Open-Source URL shortener built with Next.js & MongoDB. Track your link's clicks, get detailed analytics, and shorten URLs for free.",
+        url: '/',
+        siteName: 'URL Shortener',
+        images: [
+            {
+                url: '/preview.png',
+                width: 1200,
+                height: 630,
+                alt: 'URL Shortener Preview',
+            },
+        ],
+        locale: 'en_US',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: "URL Shortener - Free Link Shortener with Analytics",
+        description: "Open-Source URL shortener built with Next.js & MongoDB. Track your link's clicks, get detailed analytics, and shorten URLs for free.",
+        images: ['/preview.png'],
+        creator: '@AgamyaSamuel', // Replace with actual Twitter handle
+    },
+    robots: {
+        index: true,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            noimageindex: false,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
 };
 
 export default function RootLayout({ children }) {
