@@ -199,6 +199,169 @@ export default function LinkAnalyticsPage() {
                 </div>
             </div>
             
+            {/* Click Log Table */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Click Log</CardTitle>
+                    <CardDescription>Detailed list of individual clicks ({clickLog.total} total)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {clickLogLoading ? (
+                        <div className="grid place-items-center h-60">
+                            <Loader2 className="animate-spin h-4 w-5" />
+                        </div>
+                    ) : clickLog.clicks.length > 0 ? (
+                        <div className="space-y-4">
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm">
+                                    <thead>
+                                        <tr className="border-b">
+                                            <th className="text-left p-2">Timestamp</th>
+                                            <th className="text-left p-2">IP Address</th>
+                                            <th className="text-left p-2">Location</th>
+                                            <th className="text-left p-2">Device</th>
+                                            <th className="text-left p-2">Browser</th>
+                                            <th className="text-left p-2">OS</th>
+                                            <th className="text-left p-2">Referrer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {clickLog.clicks.map((click) => (
+                                            <tr key={click.id} className="border-b hover:bg-muted/50">
+                                                <td className="p-2">
+                                                    <div className="flex flex-col">
+                                                        <span>{formatTimestamp(click.timestamp)}</span>
+                                                        <span className="text-xs text-muted-foreground">
+                                                            {formatRelativeTime(click.timestamp)}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="flex flex-col">
+                                                        <span className="font-mono text-sm">{click.ip}</span>
+                                                        {click.ip_hash && (
+                                                            <span className="text-xs text-muted-foreground font-mono">
+                                                                Hash: {click.ip_hash.substring(0, 8)}...
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="p-2">
+                                                    <div className="flex flex-col">
+                                                        <span>{click.country}</span>
+                                                        {click.city !== "Unknown" && (
+                                                            <span className="text-xs text-muted-foreground">{click.city}</span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="p-2 capitalize">{click.device}</td>
+                                                <td className="p-2">{click.browser}</td>
+                                                <td className="p-2">{click.os}</td>
+                                                <td className="p-2">
+                                                    <span className="capitalize">{click.referrer}</span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            {/* Pagination */}
+                            {clickLog.totalPages > 1 && (
+                                <div className="flex items-center justify-between pt-4">
+                                    <div className="text-sm text-muted-foreground">
+                                        Page {clickLog.page} of {clickLog.totalPages}
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setClickLogPage(p => Math.max(1, p - 1))}
+                                            disabled={clickLogPage === 1 || clickLogLoading}
+                                        >
+                                            Previous
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setClickLogPage(p => Math.min(clickLog.totalPages, p + 1))}
+                                            disabled={clickLogPage === clickLog.totalPages || clickLogLoading}
+                                        >
+                                            Next
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="grid place-items-center h-60">
+                            <p className="text-sm text-muted-foreground">No clicks recorded yet</p>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+            
+            {/* Click Timeline */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Click Timeline</CardTitle>
+                    <CardDescription>Chronological view of recent clicks</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {clickLog.clicks.length > 0 ? (
+                        <div className="space-y-4">
+                            {clickLog.clicks.map((click, index) => {
+                                const clickDate = new Date(click.timestamp);
+                                const prevClickDate = index > 0 ? new Date(clickLog.clicks[index - 1].timestamp) : null;
+                                const isNewDay = !prevClickDate || 
+                                    clickDate.toDateString() !== prevClickDate.toDateString();
+                                
+                                return (
+                                    <div key={click.id}>
+                                        {isNewDay && (
+                                            <div className="text-sm font-medium text-muted-foreground mb-2 pt-2 border-t">
+                                                {clickDate.toLocaleDateString('en-US', { 
+                                                    weekday: 'long', 
+                                                    year: 'numeric', 
+                                                    month: 'long', 
+                                                    day: 'numeric' 
+                                                })}
+                                            </div>
+                                        )}
+                                        <div className="flex items-start gap-4 p-3 border rounded-lg hover:bg-muted/50">
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-sm font-medium">
+                                                        {formatRelativeTime(click.timestamp)}
+                                                    </span>
+                                                    <span className="text-xs text-muted-foreground">
+                                                        ({formatTimestamp(click.timestamp)})
+                                                    </span>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                                                    <span>{click.country}</span>
+                                                    {click.city !== "Unknown" && <span>• {click.city}</span>}
+                                                    <span>• {click.device}</span>
+                                                    <span>• {click.browser}</span>
+                                                    <span>• {click.os}</span>
+                                                    {click.referrer !== "direct" && (
+                                                        <span>• From {click.referrer}</span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        <div className="grid place-items-center h-60">
+                            <p className="text-sm text-muted-foreground">No clicks recorded yet</p>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+            
             {/* Time Series Chart */}
             <Card>
                 <CardHeader>
@@ -465,169 +628,6 @@ export default function LinkAnalyticsPage() {
                     </CardContent>
                 </Card>
             </div>
-            
-            {/* Click Log Table */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Click Log</CardTitle>
-                    <CardDescription>Detailed list of individual clicks ({clickLog.total} total)</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {clickLogLoading ? (
-                        <div className="grid place-items-center h-60">
-                            <Loader2 className="animate-spin h-4 w-5" />
-                        </div>
-                    ) : clickLog.clicks.length > 0 ? (
-                        <div className="space-y-4">
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b">
-                                            <th className="text-left p-2">Timestamp</th>
-                                            <th className="text-left p-2">IP Address</th>
-                                            <th className="text-left p-2">Location</th>
-                                            <th className="text-left p-2">Device</th>
-                                            <th className="text-left p-2">Browser</th>
-                                            <th className="text-left p-2">OS</th>
-                                            <th className="text-left p-2">Referrer</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {clickLog.clicks.map((click) => (
-                                            <tr key={click.id} className="border-b hover:bg-muted/50">
-                                                <td className="p-2">
-                                                    <div className="flex flex-col">
-                                                        <span>{formatTimestamp(click.timestamp)}</span>
-                                                        <span className="text-xs text-muted-foreground">
-                                                            {formatRelativeTime(click.timestamp)}
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="flex flex-col">
-                                                        <span className="font-mono text-sm">{click.ip}</span>
-                                                        {click.ip_hash && (
-                                                            <span className="text-xs text-muted-foreground font-mono">
-                                                                Hash: {click.ip_hash.substring(0, 8)}...
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td className="p-2">
-                                                    <div className="flex flex-col">
-                                                        <span>{click.country}</span>
-                                                        {click.city !== "Unknown" && (
-                                                            <span className="text-xs text-muted-foreground">{click.city}</span>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td className="p-2 capitalize">{click.device}</td>
-                                                <td className="p-2">{click.browser}</td>
-                                                <td className="p-2">{click.os}</td>
-                                                <td className="p-2">
-                                                    <span className="capitalize">{click.referrer}</span>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            {/* Pagination */}
-                            {clickLog.totalPages > 1 && (
-                                <div className="flex items-center justify-between pt-4">
-                                    <div className="text-sm text-muted-foreground">
-                                        Page {clickLog.page} of {clickLog.totalPages}
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setClickLogPage(p => Math.max(1, p - 1))}
-                                            disabled={clickLogPage === 1 || clickLogLoading}
-                                        >
-                                            Previous
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setClickLogPage(p => Math.min(clickLog.totalPages, p + 1))}
-                                            disabled={clickLogPage === clickLog.totalPages || clickLogLoading}
-                                        >
-                                            Next
-                                        </Button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    ) : (
-                        <div className="grid place-items-center h-60">
-                            <p className="text-sm text-muted-foreground">No clicks recorded yet</p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-            
-            {/* Click Timeline */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Click Timeline</CardTitle>
-                    <CardDescription>Chronological view of recent clicks</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {clickLog.clicks.length > 0 ? (
-                        <div className="space-y-4">
-                            {clickLog.clicks.map((click, index) => {
-                                const clickDate = new Date(click.timestamp);
-                                const prevClickDate = index > 0 ? new Date(clickLog.clicks[index - 1].timestamp) : null;
-                                const isNewDay = !prevClickDate || 
-                                    clickDate.toDateString() !== prevClickDate.toDateString();
-                                
-                                return (
-                                    <div key={click.id}>
-                                        {isNewDay && (
-                                            <div className="text-sm font-medium text-muted-foreground mb-2 pt-2 border-t">
-                                                {clickDate.toLocaleDateString('en-US', { 
-                                                    weekday: 'long', 
-                                                    year: 'numeric', 
-                                                    month: 'long', 
-                                                    day: 'numeric' 
-                                                })}
-                                            </div>
-                                        )}
-                                        <div className="flex items-start gap-4 p-3 border rounded-lg hover:bg-muted/50">
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-sm font-medium">
-                                                        {formatRelativeTime(click.timestamp)}
-                                                    </span>
-                                                    <span className="text-xs text-muted-foreground">
-                                                        ({formatTimestamp(click.timestamp)})
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                                                    <span>{click.country}</span>
-                                                    {click.city !== "Unknown" && <span>• {click.city}</span>}
-                                                    <span>• {click.device}</span>
-                                                    <span>• {click.browser}</span>
-                                                    <span>• {click.os}</span>
-                                                    {click.referrer !== "direct" && (
-                                                        <span>• From {click.referrer}</span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    ) : (
-                        <div className="grid place-items-center h-60">
-                            <p className="text-sm text-muted-foreground">No clicks recorded yet</p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
         </main>
     );
 }
