@@ -1,7 +1,7 @@
 "use client";
 
 import getAllLinks from "@/server_functions/getAllLinks";
-import { Copy, EllipsisVertical, ExternalLink, Eye, Loader2, Pencil, Trash } from "lucide-react";
+import { Copy, EllipsisVertical, ExternalLink, Eye, Loader2, Pencil, Trash, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -129,6 +129,12 @@ export default function page() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent className="mt-4">
+                                                    <DropdownMenuItem asChild>
+                                                        <Link href={`/dashboard/links/${link.alias}`} className="flex items-center justify-between cursor-pointer">
+                                                            View Analytics <BarChart3 className="h-4 w-4" />
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuSeparator />
                                                     <DropdownMenuItem asChild>
                                                         <div className="flex items-center justify-between" onClick={() => { navigator.clipboard.writeText(`https://${location.host}/${link.alias}`); toast.success("Copied to clipboard"); }}>Copy <Copy className="h-4 w-4" /></div>
                                                     </DropdownMenuItem>

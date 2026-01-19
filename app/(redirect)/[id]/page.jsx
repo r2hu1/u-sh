@@ -1,29 +1,31 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { findFinalUrlAndRedirect } from "@/server_functions/findFinalUrlAndRedirect";
 import { Loader2, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }) {
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
-    const finalRedirect = async () => {
-        setLoading(true);
-        const data = await findFinalUrlAndRedirect(params.id);
-        if (data) {
-            window.location.replace(JSON.parse(data));
-            setLoading(false);
-        }
-        else {
-            setIsError(true);
-            setLoading(false);
-        }
-    };
     useEffect(() => {
-        finalRedirect();
-    }, []);
+        // Redirect to API route which handles analytics and redirect
+        // The API route will capture analytics and perform the redirect
+        const redirectToApi = async () => {
+            try {
+                // Use the API route which handles analytics capture and redirect
+                window.location.href = `/api/${params.id}`;
+            } catch (error) {
+                setIsError(true);
+                setLoading(false);
+            }
+        };
+        
+        redirectToApi();
+    }, [params.id]);
+    
     return (
         <main className="h-full w-full absolute flex items-center justify-center">
             {!loading && isError ? (
