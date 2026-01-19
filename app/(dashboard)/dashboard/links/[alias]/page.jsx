@@ -383,55 +383,58 @@ export default function LinkAnalyticsPage() {
                 </CardContent>
             </Card>
             
-            {/* Time Series Chart */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Clicks Over Time (Last 30 Days)</CardTitle>
-                    <CardDescription>Daily click trends for this link</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {timeSeriesData.length > 0 ? (
-                        <ChartContainer config={{ clicks: { label: "Clicks" } }}>
-                            <LineChart data={timeSeriesData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" />
-                                <YAxis />
-                                <ChartTooltip content={<ChartTooltipContent />} />
-                                <Line type="monotone" dataKey="clicks" stroke="hsl(var(--chart-1))" strokeWidth={2} />
-                            </LineChart>
-                        </ChartContainer>
-                    ) : (
-                        <div className="grid place-items-center h-60">
-                            <p className="text-sm text-muted-foreground">No data available</p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-            
-            {/* Geographic Chart */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Top Countries</CardTitle>
-                    <CardDescription>Geographic distribution of clicks</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {geographicData.countries.length > 0 ? (
-                        <ChartContainer config={{ clicks: { label: "Clicks" } }}>
-                            <BarChart data={geographicData.countries}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="country" />
-                                <YAxis />
-                                <ChartTooltip content={<ChartTooltipContent />} />
-                                <Bar dataKey="clicks" fill="hsl(var(--chart-1))" />
-                            </BarChart>
-                        </ChartContainer>
-                    ) : (
-                        <div className="grid place-items-center h-60">
-                            <p className="text-sm text-muted-foreground">No data available</p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+            {/* Time Series Chart and Geographic Chart in same row */}
+            <div className="grid gap-7 md:gap-3 md:grid-cols-2">
+                {/* Time Series Chart */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Clicks Over Time (Last 30 Days)</CardTitle>
+                        <CardDescription>Daily click trends for this link</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {timeSeriesData.length > 0 ? (
+                            <ChartContainer config={{ clicks: { label: "Clicks" } }}>
+                                <LineChart data={timeSeriesData}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="date" />
+                                    <YAxis />
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <Line type="monotone" dataKey="clicks" stroke="hsl(var(--chart-1))" strokeWidth={2} />
+                                </LineChart>
+                            </ChartContainer>
+                        ) : (
+                            <div className="grid place-items-center h-60">
+                                <p className="text-sm text-muted-foreground">No data available</p>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+                
+                {/* Geographic Chart */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Top Countries</CardTitle>
+                        <CardDescription>Geographic distribution of clicks</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {geographicData.countries.length > 0 ? (
+                            <ChartContainer config={{ clicks: { label: "Clicks" } }}>
+                                <BarChart data={geographicData.countries}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="country" />
+                                    <YAxis />
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <Bar dataKey="clicks" fill="hsl(var(--chart-1))" />
+                                </BarChart>
+                            </ChartContainer>
+                        ) : (
+                            <div className="grid place-items-center h-60">
+                                <p className="text-sm text-muted-foreground">No data available</p>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
             
             <div className="grid gap-7 md:gap-3 md:grid-cols-2">
                 {/* Device Type Chart */}
