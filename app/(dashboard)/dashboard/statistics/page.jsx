@@ -9,6 +9,8 @@ import { getGeographicData } from "@/server_functions/getGeographicData";
 import { getDeviceData } from "@/server_functions/getDeviceData";
 import { getReferrerData } from "@/server_functions/getReferrerData";
 import { getUniqueVisitors } from "@/server_functions/getUniqueVisitors";
+import { getHourlyBreakdown } from "@/server_functions/getHourlyBreakdown";
+import { getPeakHours } from "@/server_functions/getPeakHours";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
@@ -25,6 +27,8 @@ export default function page() {
     const [deviceData, setDeviceData] = useState({ devices: [], browsers: [], os: [] });
     const [referrerData, setReferrerData] = useState([]);
     const [uniqueVisitors, setUniqueVisitors] = useState({ unique: 0, total: 0 });
+    const [hourlyBreakdown, setHourlyBreakdown] = useState([]);
+    const [peakHours, setPeakHours] = useState({ peakHours: [], peakDays: [], topHour: null, topDay: null });
     const [analyticsLoading, setAnalyticsLoading] = useState(true);
 
     const getAllData = async () => {
@@ -38,12 +42,14 @@ export default function page() {
     const getAnalyticsData = async () => {
         try {
             // Fetch all analytics data in parallel
-            const [timeData, geoData, devData, refData, uniqueData] = await Promise.all([
+            const [timeData, geoData, devData, refData, uniqueData, hourlyData, peakData] = await Promise.all([
                 getTimeSeriesData(null, "day", 30),
                 getGeographicData(null, 10),
                 getDeviceData(null),
                 getReferrerData(null, 10),
-                getUniqueVisitors(null)
+                getUniqueVisitors(null),
+                getHourlyBreakdown(null, 30),
+                getPeakHours(null, 30)
             ]);
             
             setTimeSeriesData(timeData);
@@ -51,6 +57,8 @@ export default function page() {
             setDeviceData(devData);
             setReferrerData(refData);
             setUniqueVisitors(uniqueData);
+            setHourlyBreakdown(hourlyData);
+            setPeakHours(peakData);
             setAnalyticsLoading(false);
         } catch (err) {
             console.error("Error loading analytics:", err);
@@ -65,6 +73,14 @@ export default function page() {
     
     // Chart colors
     const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
+    
+    // Format hour for display (0-23 to 12am-11pm)
+    const formatHour = (hour) => {
+        if (hour === 0) return "12am";
+        if (hour < 12) return `${hour}am`;
+        if (hour === 12) return "12pm";
+        return `${hour - 12}pm`;
+    };
     
     return (
         <main className="px-6 md:px-20 lg:px-44 py-10 grid gap-7">
@@ -277,6 +293,124 @@ export default function page() {
                                     </div>
                                 ))}
                             </div>
+                        ) : (
+                            <div className="grid place-items-center h-60">
+                                <p className="text-sm text-muted-foreground">No data available</p>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+            
+            {/* Hourly Breakdown Chart */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Hourly Breakdown</CardTitle>
+                    <CardDescription>Clicks by hour of day across all links (last 30 days)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {analyticsLoading ? (
+                        <div className="grid place-items-center h-60">
+                            <Loader2 className="animate-spin h-4 w-5" />
+                        </div>
+                    ) : hourlyBreakdown.length > 0 ? (
+                        <ChartContainer config={{ clicks: { label: "Clicks" } }}>
+                            <BarChart data={hourlyBreakdown}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis 
+                                    dataKey="hour" 
+                                    tickFormatter={(value) => {
+                                        if (value === 0) return "12am";
+                                        if (value < 12) return `${value}am`;
+                                        if (value === 12) return "12pm";
+                                        return `${value - 12}pm`;
+                                    }}
+                                />
+                                <YAxis />
+                                <ChartTooltip 
+                                    content={<ChartTooltipContent />}
+                                    labelFormatter={(value) => {
+                                        if (value === 0) return "12am";
+                                        if (value < 12) return `${value}am`;
+                                        if (value === 12) return "12pm";
+                                        return `${value - 12}pm`;
+                                    }}
+                                />
+                                <Bar dataKey="clicks" fill="hsl(var(--chart-1))" />
+                            </BarChart>
+                        </ChartContainer>
+                    ) : (
+                        <div className="grid place-items-center h-60">
+                            <p className="text-sm text-muted-foreground">No data available</p>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+            
+            {/* Peak Hours Analysis */}
+            <div className="grid gap-7 md:gap-3 md:grid-cols-2">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Peak Hours of Day</CardTitle>
+                        <CardDescription>
+                            {peakHours.topHour 
+                                ? `Peak hour: ${formatHour(peakHours.topHour.hour)} (${peakHours.topHour.clicks} clicks)`
+                                : "Busiest hours across all links"}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {analyticsLoading ? (
+                            <div className="grid place-items-center h-60">
+                                <Loader2 className="animate-spin h-4 w-5" />
+                            </div>
+                        ) : peakHours.peakHours.length > 0 ? (
+                            <ChartContainer config={{ clicks: { label: "Clicks" } }}>
+                                <BarChart data={peakHours.peakHours}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis 
+                                        dataKey="hour" 
+                                        tickFormatter={(value) => formatHour(value)}
+                                    />
+                                    <YAxis />
+                                    <ChartTooltip 
+                                        content={<ChartTooltipContent />}
+                                        labelFormatter={(value) => formatHour(value)}
+                                    />
+                                    <Bar dataKey="clicks" fill="hsl(var(--chart-2))" />
+                                </BarChart>
+                            </ChartContainer>
+                        ) : (
+                            <div className="grid place-items-center h-60">
+                                <p className="text-sm text-muted-foreground">No data available</p>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+                
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Peak Days of Week</CardTitle>
+                        <CardDescription>
+                            {peakHours.topDay 
+                                ? `Peak day: ${peakHours.topDay.dayName} (${peakHours.topDay.clicks} clicks)`
+                                : "Busiest days across all links"}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {analyticsLoading ? (
+                            <div className="grid place-items-center h-60">
+                                <Loader2 className="animate-spin h-4 w-5" />
+                            </div>
+                        ) : peakHours.peakDays.length > 0 ? (
+                            <ChartContainer config={{ clicks: { label: "Clicks" } }}>
+                                <BarChart data={peakHours.peakDays}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="dayName" />
+                                    <YAxis />
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <Bar dataKey="clicks" fill="hsl(var(--chart-3))" />
+                                </BarChart>
+                            </ChartContainer>
                         ) : (
                             <div className="grid place-items-center h-60">
                                 <p className="text-sm text-muted-foreground">No data available</p>
