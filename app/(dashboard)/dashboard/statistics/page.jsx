@@ -1,6 +1,6 @@
 "use client";
 import { getUserData } from "@/server_functions/getUserData";
-import { ExternalLink, Eye, Loader2 } from "lucide-react";
+import { ExternalLink, Eye, Loader2, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
@@ -13,6 +13,7 @@ import { getHourlyBreakdown } from "@/server_functions/getHourlyBreakdown";
 import { getPeakHours } from "@/server_functions/getPeakHours";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Button } from "@/components/ui/button";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 
 export default function page() {
@@ -30,6 +31,7 @@ export default function page() {
     const [hourlyBreakdown, setHourlyBreakdown] = useState([]);
     const [peakHours, setPeakHours] = useState({ peakHours: [], peakDays: [], topHour: null, topDay: null });
     const [analyticsLoading, setAnalyticsLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
     const getAllData = async () => {
         const [allClicks, topLinks, allLinks] = await getUserData();
@@ -39,7 +41,13 @@ export default function page() {
         setLoading(false);
     };
     
-    const getAnalyticsData = async () => {
+    const getAnalyticsData = async (isRefresh = false) => {
+        if (isRefresh) {
+            setRefreshing(true);
+        } else {
+            setAnalyticsLoading(true);
+        }
+        
         try {
             // Fetch all analytics data in parallel
             const [timeData, geoData, devData, refData, uniqueData, hourlyData, peakData] = await Promise.all([
@@ -60,9 +68,11 @@ export default function page() {
             setHourlyBreakdown(hourlyData);
             setPeakHours(peakData);
             setAnalyticsLoading(false);
+            setRefreshing(false);
         } catch (err) {
             console.error("Error loading analytics:", err);
             setAnalyticsLoading(false);
+            setRefreshing(false);
         }
     };
 
@@ -84,6 +94,27 @@ export default function page() {
     
     return (
         <main className="px-6 md:px-20 lg:px-44 py-10 grid gap-7">
+            {/* Header with refresh button */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold">Statistics</h1>
+                    <p className="text-sm text-muted-foreground">Analytics overview for all your links</p>
+                </div>
+                <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                        getAllData();
+                        getAnalyticsData(true);
+                    }}
+                    disabled={refreshing || loading || analyticsLoading}
+                    className="flex items-center gap-2"
+                >
+                    <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                    Refresh
+                </Button>
+            </div>
+            
             <div className="border rounded-lg grid grid-cols-2 md:grid-cols-4 bg-card shadow-sm">
                 <div className="text-center p-4 border-r border-border">
                     <h2 className="text-2xl"><CountUp end={totalLinks.length} start={0} /></h2>

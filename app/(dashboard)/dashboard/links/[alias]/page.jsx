@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,45 +40,54 @@ export default function LinkAnalyticsPage() {
     const [clickLog, setClickLog] = useState({ clicks: [], total: 0, page: 1, totalPages: 0 });
     const [clickLogPage, setClickLogPage] = useState(1);
     const [clickLogLoading, setClickLogLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    
+    const fetchAnalytics = async (isRefresh = false) => {
+        if (isRefresh) {
+            setRefreshing(true);
+        } else {
+            setLoading(true);
+        }
+        
+        try {
+            // Fetch all analytics data for this specific link
+            const [linkInfo, timeData, geoData, devData, refData, uniqueData, hourlyData, peakData, logData] = await Promise.all([
+                getLinkAnalytics(alias),
+                getTimeSeriesData(alias, "day", 30),
+                getGeographicData(alias, 10),
+                getDeviceData(alias),
+                getReferrerData(alias, 10),
+                getUniqueVisitors(alias),
+                getHourlyBreakdown(alias, 30),
+                getPeakHours(alias, 30),
+                getClickLog(alias, clickLogPage, 20)
+            ]);
+            
+            if (!linkInfo) {
+                // Link doesn't exist or doesn't belong to user
+                router.push("/dashboard/links");
+                return;
+            }
+            
+            setLinkData(linkInfo);
+            setTimeSeriesData(timeData);
+            setGeographicData(geoData);
+            setDeviceData(devData);
+            setReferrerData(refData);
+            setUniqueVisitors(uniqueData);
+            setHourlyBreakdown(hourlyData);
+            setPeakHours(peakData);
+            setClickLog(logData);
+            setLoading(false);
+            setRefreshing(false);
+        } catch (err) {
+            console.error("Error loading analytics:", err);
+            setLoading(false);
+            setRefreshing(false);
+        }
+    };
     
     useEffect(() => {
-        const fetchAnalytics = async () => {
-            try {
-                // Fetch all analytics data for this specific link
-                const [linkInfo, timeData, geoData, devData, refData, uniqueData, hourlyData, peakData, logData] = await Promise.all([
-                    getLinkAnalytics(alias),
-                    getTimeSeriesData(alias, "day", 30),
-                    getGeographicData(alias, 10),
-                    getDeviceData(alias),
-                    getReferrerData(alias, 10),
-                    getUniqueVisitors(alias),
-                    getHourlyBreakdown(alias, 30),
-                    getPeakHours(alias, 30),
-                    getClickLog(alias, 1, 20)
-                ]);
-                
-                if (!linkInfo) {
-                    // Link doesn't exist or doesn't belong to user
-                    router.push("/dashboard/links");
-                    return;
-                }
-                
-                setLinkData(linkInfo);
-                setTimeSeriesData(timeData);
-                setGeographicData(geoData);
-                setDeviceData(devData);
-                setReferrerData(refData);
-                setUniqueVisitors(uniqueData);
-                setHourlyBreakdown(hourlyData);
-                setPeakHours(peakData);
-                setClickLog(logData);
-                setLoading(false);
-            } catch (err) {
-                console.error("Error loading analytics:", err);
-                setLoading(false);
-            }
-        };
-        
         if (alias) {
             fetchAnalytics();
         }
@@ -160,19 +169,31 @@ export default function LinkAnalyticsPage() {
     
     return (
         <main className="px-6 md:px-20 lg:px-44 py-10 grid gap-7">
-            {/* Header with back button */}
-            <div className="flex items-center gap-4">
-                <Button variant="outline" size="icon" asChild>
-                    <Link href="/dashboard/links">
-                        <ArrowLeft className="h-4 w-4" />
-                    </Link>
-                </Button>
-                <div>
-                    <h1 className="text-2xl font-bold">Link Analytics</h1>
-                    <p className="text-sm text-muted-foreground">
-                        {typeof window !== 'undefined' && `https://${window.location.host}/${alias}`}
-                    </p>
+            {/* Header with back button and refresh */}
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                    <Button variant="outline" size="icon" asChild>
+                        <Link href="/dashboard/links">
+                            <ArrowLeft className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                    <div>
+                        <h1 className="text-2xl font-bold">Link Analytics</h1>
+                        <p className="text-sm text-muted-foreground">
+                            {typeof window !== 'undefined' && `https://${window.location.host}/${alias}`}
+                        </p>
+                    </div>
                 </div>
+                <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => fetchAnalytics(true)}
+                    disabled={refreshing || loading}
+                    className="flex items-center gap-2"
+                >
+                    <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                    Refresh
+                </Button>
             </div>
             
             {/* Summary Stats */}
