@@ -81,6 +81,7 @@ export default function Header() {
                   }}
                   className={cn(
                     defaultClass,
+                    "hidden",
                     pathName == "/dashboard/statistics" && activeClass,
                   )}
                   href="/dashboard/statistics"
