@@ -2,7 +2,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { connectToDb } from "../db/connect";
 import short_url from "@/db/models/short_url";
-import User from "@/models/user";
+import User from "@/db/models/user";
 
 function randomAlias() {
   const characters =

@@ -1,7 +1,7 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
 import { connectToDb } from "../db/connect";
-import User from "@/models/user";
+import User from "@/db/models/user";
 
 export default async function createUserAtSignUp() {
   const user = await currentUser();
